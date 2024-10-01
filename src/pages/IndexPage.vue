@@ -1,47 +1,112 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page>
+    <div class="full-height row no-wrap justify-start items-start content-start rounded bg-white" id="main">
+      <div class="gt-sm col-md-2 full-height" id="left-side-bar">
+        <q-list dense padding>
+          <q-item clickable v-ripple>
+            <q-item-section>
+              Item
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section>
+              Item
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section>
+              Item
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
+      <div class="col-12 col-md-10 full-height column justify-between">
+        <div class="row">
+          <div style="width: 100%;">
+            <q-chat-message
+              label="Sunday, 19th"
+            />
+            <div style="width: 100%; overflow:auto; max-height: 90%;" class="scroll overflow-auto">
+              <message-component time="Yesterday 11: 45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+              <message-component time="Yesterday 11:45AM" message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias incidunt qui nemo. Quod earum recusandae soluta aliquid mollitia, assumenda optio. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, qui? A error fuga, culpa distinctio ut alias beatae quia, tenetur perspiciatis accusamus quis ex. Quo facere sit deserunt debitis non." user-name="Johno"/>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="fix-bottom" >
+          <q-editor v-model="editor" min-height="5rem" />
+        </div>
+      </div>
+    </div>
+
   </q-page>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+<style>
+#main {
+  min-height: inherit;
+}
 
-defineOptions({
-  name: 'IndexPage'
-});
+.full-height {
+  min-height: inherit;
+}
+#left-side-bar {
+  border-right: 1px solid #00000015;
+}
+.q-chat-message .q-chat-message--received {
+  width: 250px;
+}
+#message {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #00000015;
+  border-top: 1px solid #00000015;
+}
+.rounded {
+  border-top-left-radius: 10px;
+}
+.fix-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
+</style>
+
+<script>
+import { ref } from 'vue'
+import MessageComponent from 'components/MessageComponent.vue';
+
+export default {
+  components: { MessageComponent },
+  setup () {
+    const leftDrawerOpen = ref(false)
+    const editor = ref('')
+    return {
+      leftDrawerOpen,
+      editor,
+      toggleLeftDrawer () {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      }
+    }
   }
-]);
-
-const meta = ref<Meta>({
-  totalCount: 1200
-});
+}
 </script>
