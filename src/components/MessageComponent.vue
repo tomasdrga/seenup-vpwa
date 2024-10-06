@@ -1,24 +1,28 @@
 <template>
-  <div class="row no-wrap" id="message">
+  <div class="row no-wrap q-pl-md" id="message">
     <div class="q-pr-md">
       <q-avatar rounded class="q-mt-xs">
-        <img src="https://cdn.quasar.dev/img/avatar.png">
+        <img :src="profilePic" alt="Profile Pic" />
       </q-avatar>
     </div>
     <div>
-      <div class="row message-info-row">
-        <span class="q-mr-md text-weight-bold text-body1">{{ userName }}</span>
-        <div class="disabled text-caption">{{ time }}</div>
+      <div class="row items-center">
+        <span class="q-mr-md text-weight-bold text-body1 text-purple">{{ userName }}</span>
+        <div class="text-purple-1 text-caption">{{ time }}</div>
       </div>
-      <div v-html="processedMessage" class="text-body2"></div>
+      <div v-html="processedMessage" class="text-body2 text-purple"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps,  computed } from 'vue';
+import { computed, defineProps } from 'vue';
 
 const props = defineProps({
+  profilePic: {
+    type: String,
+    required: true
+  },
   userName: {
     type: String,
     required: true
@@ -34,11 +38,7 @@ const props = defineProps({
 });
 
 const processedMessage = computed(() => {
-  let text = props.message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  text = text.replace(/\B@([\w]+)/g, '<mark>@$1</mark>');
-
-  return text;
+  return props.message.replace(/\B@([\w]+)/g, '<mark>@$1</mark>');
 });
 </script>
 

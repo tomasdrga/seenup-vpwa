@@ -1,5 +1,5 @@
 <template>
-    <div class="col command-line">
+    <div class="command-line rounded-border bg-white q-mb-md q-mx-md text-purple">
       <div>
         <q-editor
           v-model="editor"
@@ -16,22 +16,28 @@
         ]"
         />
       </div>
-      <div class="down-menu-bar">
+      <div class="q-pa-none row justify-end" style="height: 100%;">
         <q-btn round dense flat icon="send" size="sm" class="q-ma-xs"/>
       </div>
     </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+
+export default {
+  setup () {
+    return {
+      editor: ref('Message #social')
+    }
+  }
+}
 </script>
 
 <style scoped>
-  /* Input block */
-  .command-line {
-    background: #FFFFFF;
+  .rounded-border {
     border: 1px solid #00000015;
-    border-radius: 10px;
-    margin-bottom: 0.5rem;
+    border-radius: 5px;
   }
 
   /* Input block modifier */
@@ -44,7 +50,7 @@
 
   @media (min-width: 1024px) {
     .command-line {
-      max-width: 75vw;
+      max-width: 74vw;
     }
   }
 
@@ -54,10 +60,4 @@
     }
   }
 
-  /* Down menu bar with send button */
-  .down-menu-bar {
-    display: flex;
-    justify-content: end;
-    height: 100%;
-  }
 </style>
