@@ -46,7 +46,7 @@
 
     <q-drawer show-if-above breakpoint="600" v-model="leftDrawerOpen" side="left" width="75" class="bg-grey row content-between justify-center">
       <div class="row justify-center items-center" id="top_actions">
-        <q-tabs vertical class="text-purple">
+        <q-tabs vertical class="text-primary">
           <q-route-tab to="/messages" id="message-tab">
             <div class="column items-center">
               <q-icon name="home"/>
@@ -82,7 +82,7 @@
 
     <q-footer reveal class="bg-grey text-primary" v-if="!leftDrawerOpen" height-hint="20">
       <q-toolbar>
-        <q-tabs horizontal class="text-purple row justify-center items-center full-width">
+        <q-tabs horizontal class="text-primary row justify-center items-center full-width">
           <q-route-tab to="/messages" id="message-tab">
             <div class="column items-center">
               <q-icon name="home"/>

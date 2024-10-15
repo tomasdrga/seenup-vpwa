@@ -8,10 +8,10 @@
     </div>
     <div>
       <div class="row items-center">
-        <span class="q-mr-md text-weight-bold text-body1 text-purple">{{ userName }}</span>
-        <div class="text-purple-1 text-caption">{{ time }}</div>
+        <span class="q-mr-md text-weight-bold text-body1 text-primary">{{ userName }}</span>
+        <div class="text-primary text-caption">{{ time }}</div>
       </div>
-      <div v-html="processedMessage" class="text-message text-purple"></div>
+      <div v-html="processedMessage" class="text-message text-primary"></div>
     </div>
   </div>
 </template>

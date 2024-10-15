@@ -1,16 +1,16 @@
 <template>
-  <div v-if="showCommands" class="command-suggestions absolute bg-white rounded-border text-purple hide-scrollbar q-ml-sm" style="max-width: 300px; max-height: 10rem; overflow:auto; ">
+  <div v-if="showCommands" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar q-ml-sm" style="max-width: 300px; max-height: 10rem; overflow:auto; ">
     <q-list dense>
       <q-item v-for="(command, index) in commands" :key="index" clickable v-ripple @click="selectCommand(command.name)" :class="index === commands.length - 1 ? '' : 'command-item'" >
         <q-item-section class="q-py-lg" >
           <q-item-label class="text-bold">{{ command.name }}</q-item-label>
-          <q-item-label caption class="text-purple-1 text-caption" >{{ command.description }}</q-item-label>
+          <q-item-label caption class="text-primary text-caption" >{{ command.description }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
   </div>
 
-  <div v-if="showUsers" :style="{top: userOffset + 'rem'}" class="command-suggestions absolute bg-white rounded-border text-purple hide-scrollbar q-ml-sm" style="width: 250px; max-height: 10rem; overflow:auto; max-width: 300px ">
+  <div v-if="showUsers" :style="{top: userOffset + 'rem'}" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar q-ml-sm" style="width: 250px; max-height: 10rem; overflow:auto; max-width: 300px ">
     <q-list dense class="q-py-sm">
       <q-item v-for="(user, index) in users" :key="index" clickable v-ripple @click="selectUser(user.userName)" :class="index === users.length - 1 ? '' : 'command-item'">
         <div class="content-center">
@@ -23,11 +23,10 @@
     </q-list>
   </div>
 
-  <div class="command-line rounded-border bg-white q-mb-md q-mx-md text-purple">
+  <div class="command-line rounded-border bg-white text-primary">
     <div>
       <q-editor
         v-model="editor"
-        @keyup = "getCaretPosition"
         ref="editorElement"
         min-height="1rem"
         max-height="5rem"
@@ -56,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
+import { ref, defineEmits, watch, nextTick } from 'vue';
 
   import { computed } from 'vue';
 
@@ -72,18 +71,10 @@ import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
   const showToolbar = ref(true);
   const showCommands = ref(false);
   const showUsers = ref(false);
-  const cursorPosition = ref(0);
   watch(editor, function(newValue) {
     showCommands.value = newValue.startsWith('/');
   });
 
-  const getCaretPosition = () => {
-    const el = editorElement.value.$el.querySelector('.q-editor__content');
-    if (el) {
-      cursorPosition.value = el.selectionStart || 0;
-    }
-  };
-  onMounted(getCaretPosition);
 
   watch(editor, (newValue: string) => {
     const replacedValue: string = newValue.replace(/<br>/g, ' ').replace(/<\/?div>/g, ' ');
@@ -161,25 +152,5 @@ import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
   .rounded-border {
     border: 1px solid #00000015;
     border-radius: 5px;
-  }
-
-  /* Input block modifier */
-  @media (max-width: 1024px) {
-    .command-line {
-      max-width: 100vw;
-      margin-inline: 5px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .command-line {
-      max-width: 74vw;
-    }
-  }
-
-  @media (min-width: 1440px) {
-    .command-line {
-      max-width: 76vw;
-    }
   }
 </style>

@@ -50,8 +50,38 @@
           </q-list>
         </div>
       </div>
-      <div class="col-12 col-md-10 full-height column justify-between">
-        <ChannelComponent />
+      <div class="column col-12 col-md-10" id="channel-container">
+        <div class="col-22 text-primary q-pt-md top-bar">
+          <div class="fix-top bg-white full-width text-h6 q-pl-md text-weight-bold border-bottom content-center">
+            #social
+          </div>    
+          <q-tabs align="left">
+          <q-route-tab to="/messages" id="message-tab">
+            <div class="row items-center">
+              <q-icon name="question_answer" class="q-mr-xs"/>
+              <span class="text-weight-bold">Messages</span>
+            </div>
+          </q-route-tab>
+          <q-route-tab to="/files" id="files-tab">
+            <div class="row items-center">
+              <q-icon name="layers" class="q-mr-xs"/>
+              <span class="text-weight-bold">Files</span>
+            </div>
+          </q-route-tab>
+          <q-route-tab to="/settings" id="settings-tab">
+            <div class="row items-center">
+              <q-icon name="settings" class="q-mr-xs"/>
+              <span class="text-weight-bold">Settings</span>
+            </div>
+          </q-route-tab>
+        </q-tabs>
+        </div>
+        <div class="col channel-container">
+            <ChannelComponent />
+        </div>
+        <div class="col-2 justify-center items-center bottom-bar q-px-md q-py-sm">
+          <CommandLineComponent />
+        </div>
       </div>
     </div>
   </q-page>
@@ -59,25 +89,29 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import ChannelComponent from 'components/ChannelComponent.vue';
+  import CommandLineComponent from 'components/CommandLineComponent.vue'
+  import ChannelComponent from 'src/components/ChannelComponent.vue';
 
   export default defineComponent({
-    components: { ChannelComponent }
-  });
-  
-  export default {
+    components: { ChannelComponent, CommandLineComponent },
     data() {
       return {
         dialog: false,
       };
     },
-  };
+  });
+  
 </script>
 
 <style lang="scss">
 #main {
   border: 2px solid #00000015;
   min-height: calc(100vh - 67px);
+  max-height: calc(100vh - 67px);
+}
+
+.top-bar {
+  border-bottom: 2px solid #00000015;
 }
 
 #left-side-bar {
@@ -85,16 +119,21 @@
   width: full-width;
   height: full-height;
   min-height: calc(100vh - 70px);
+  max-height: calc(100vh - 70px);
+}
+
+#channel-container {
+  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
+  max-height: calc(100vh - 70px);
 }
 
 .q-chat-message .q-chat-message--received {
   width: 250px;
 }
 
-#message {
-  padding: 1rem 1rem;
-  border-bottom: 1px solid #00000015;
-  border-top: 1px solid #00000015;
+.channel-container {
+  overflow: auto;
 }
 
 .rounded {

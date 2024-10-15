@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { nextTick, ref } from 'vue';
+  import { ref } from 'vue';
   import MessageComponent from 'components/MessageComponent.vue'
-  import CommandLineComponent from 'components/CommandLineComponent.vue'
   import { QInfiniteScroll } from 'quasar';
 
   interface Message {
@@ -46,33 +45,7 @@
     { id: 29, text: 'Čaukooo', userName: 'Tomas',profilePic: 'https://cdn.quasar.dev/img/avatar1.jpg', timestamp: new Date('2024-03-01T09:35:00') },
   ])
 
-  const users = ref([
-    { userName: 'Matej', profilePic: 'https://cdn.quasar.dev/img/boy-avatar.png' },
-    { userName: 'Tomas', profilePic: 'https://cdn.quasar.dev/img/avatar1.jpg' },
-  ])
 
-  function commandsCheck(message: string) {
-    const messageClean = message.replace(/<[^>]*>/g, '').trim();
-
-    if (messageClean === '/list') {
-      const userList = users.value.map(user => user.userName).join(', ');
-      const listMessage = `Users in the channel: ${userList}`;
-
-      const systemMessage = {
-        id: allMessages.value.length + 1,
-        text: listMessage,
-        userName: 'System',
-        profilePic: '',
-        timestamp: new Date(),
-      };
-
-      allMessages.value.push(systemMessage);
-      items.value.push(systemMessage);
-
-      return true
-    }
-    return false
-  }
 
   const items = ref<Message[]>(allMessages.value.slice(-7))
 
@@ -84,37 +57,6 @@
     return timestamp.toISOString().split('T')[0]
   }
 
-  const scrollToBottom = () => {
-    const scrollableContainer = document.querySelector('.col.overflow-auto')
-    if (scrollableContainer) {
-      scrollableContainer.scrollTop = scrollableContainer.scrollHeight
-    }
-  }
-
-  function addMessage(newMessage: string) {
-    if (commandsCheck(newMessage)) {
-      nextTick(() => {
-        scrollToBottom()
-      })
-      return
-    }
-
-    const message = {
-      id: allMessages.value.length + 1,
-      text: newMessage,
-      userName: 'Matej',
-      profilePic: 'https://cdn.quasar.dev/img/boy-avatar.png',
-      timestamp: new Date(),
-    }
-
-    allMessages.value.push(message)
-
-    items.value.push(message)
-
-    nextTick(() => {
-      scrollToBottom()
-    })
-  }
 
 const onLoad = (index: number, done: () => void) => {
   setTimeout(() => {
@@ -133,10 +75,6 @@ const onLoad = (index: number, done: () => void) => {
 </script>
 
 <template>
-  <div class="fix-top bg-white full-width text-h6 q-pl-md text-weight-bold border-bottom content-center text-purple" style="height: 3rem">
-    #social
-  </div>
-  <div class="col overflow-auto hide-scrollbar">
     <q-infinite-scroll ref="infiniteScroll"  @load="onLoad" reverse>
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
@@ -147,7 +85,7 @@ const onLoad = (index: number, done: () => void) => {
         <q-chat-message v-if="index === 0 || getDayString(item.timestamp) !== getDayString(items[index - 1].timestamp)"
                         :label="getDayString(item.timestamp)"
                         style="height: 1rem; padding-top: 0;"
-                        class="text-purple-1"/>
+                        class="text-primary"/>
         <message-component
           :time="formatTime(item.timestamp)"
           :message="item.text"
@@ -156,11 +94,6 @@ const onLoad = (index: number, done: () => void) => {
         />
       </template>
     </q-infinite-scroll>
-  </div>
-
-  <div class="fix-bottom bg-white">
-    <CommandLineComponent @send-message="addMessage" />
-  </div>
 </template>
 
 <style scoped>
