@@ -2,7 +2,7 @@
   "name": "seenup",
   "version": "0.0.1",
   "description": "Slack clone SLA application",
-  "productName": "SeenUp App",
+  "productName": "SeenUp",
   "author": "Tomáš Drga <xdrga@stuba.sk>, Matej Drienovský<xdrienovsky2@stuba.sk>",
   "private": true,
   "scripts": {
