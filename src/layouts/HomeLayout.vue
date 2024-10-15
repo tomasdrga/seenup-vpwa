@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh lpr lff" class="bg-grey no-scroll">
-    <q-header class="bg-grey text-purple" height-hint="98">
+    <q-header class="bg-grey text-primary" height-hint="98">
       <q-toolbar>
         <q-toolbar-title class="text-weight-bold row items-center auto q-pa-none q-mr-md">
           <q-btn flat to="/" size="lg" class="text-weight-bold q-pa-none">

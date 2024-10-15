@@ -1,24 +1,29 @@
 <template>
-  <div class="row no-wrap" id="message">
+  <div class="row no-wrap q-pl-md" id="message">
     <div class="q-pr-md">
-      <q-avatar rounded>
-        <img src="https://cdn.quasar.dev/img/avatar.png">
+      <q-avatar rounded class="q-mt-xs relative-position">
+        <img :src="profilePic" alt="Profile Pic" />
+        <q-badge class="custom-badge q-pa-none absolute" color="green" />
       </q-avatar>
     </div>
     <div>
-      <div class="row">
-        <span class="q-mr-md text-weight-bold">{{userName}}</span>
-        <div>{{time}}</div>
+      <div class="row items-center">
+        <span class="q-mr-md text-weight-bold text-body1 text-purple">{{ userName }}</span>
+        <div class="text-purple-1 text-caption">{{ time }}</div>
       </div>
-      <div>{{message}}</div>
+      <div v-html="processedMessage" class="text-message text-purple"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 
-defineProps({
+const props = defineProps({
+  profilePic: {
+    type: String,
+    required: true
+  },
   userName: {
     type: String,
     required: true
@@ -32,4 +37,33 @@ defineProps({
     required: true
   },
 });
+
+const processedMessage = computed(() => {
+  return props.message.replace(/\B@([\w]+)/g, '<mark>@$1</mark>');
+});
 </script>
+
+<style>
+  mark {
+    background-color: rgba(38, 0, 101, 0.15);
+    color: #260065;
+    margin-right: 2px;
+  }
+
+  .message-info-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .custom-badge {
+    width: 12px;
+    height: 10px;
+    border-radius: 50%;
+    bottom: -3px;
+    right: -4px;
+  }
+
+  .text-message {
+    font-size: small;
+  }
+</style>

@@ -51,16 +51,28 @@
         </div>
       </div>
       <div class="col-12 col-md-10 full-height column justify-between">
-        <div class="row">
-          <div style="width: 100%;">
-          </div>
-        </div>
-        <div class="fix-bottom">
-        </div>
+        <ChannelComponent />
       </div>
     </div>
   </q-page>
 </template>
+
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import ChannelComponent from 'components/ChannelComponent.vue';
+
+  export default defineComponent({
+    components: { ChannelComponent }
+  });
+  
+  export default {
+    data() {
+      return {
+        dialog: false,
+      };
+    },
+  };
+</script>
 
 <style lang="scss">
 #main {
@@ -130,17 +142,4 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
     min-height: calc(100vh - 124px);
   }
 }
-
 </style>
-
-
-<script>
-
-export default {
-  data() {
-    return {
-      dialog: false,
-    };
-  },
-};
-</script>
