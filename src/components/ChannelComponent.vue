@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { nextTick, ref } from 'vue';
   import MessageComponent from 'components/MessageComponent.vue'
   import CommandLineComponent from 'components/CommandLineComponent.vue'
+  import { QInfiniteScroll } from 'quasar';
 
   interface Message {
     id: number
@@ -10,6 +11,8 @@
     profilePic: string
     timestamp: Date
   }
+
+  const infiniteScroll = ref<QInfiniteScroll | null>(null);
 
   const allMessages = ref<Message[]>([
     { id: 1, text: 'Caukoo', userName: 'Matej',profilePic:'https://cdn.quasar.dev/img/boy-avatar.png', timestamp: new Date('2024-02-01T10:00:00') },
@@ -41,71 +44,126 @@
     { id: 27, text: 'Haha, dobre teda, dohodneme sa po piatku.', userName: 'Tomas',profilePic: 'https://cdn.quasar.dev/img/avatar1.jpg', timestamp: new Date('2024-03-01T09:30:00') },
     { id: 28, text: 'Platí! Maj sa zatiaľ!', userName: 'Matej',profilePic:'https://cdn.quasar.dev/img/boy-avatar.png', timestamp: new Date('2024-03-01T09:32:00') },
     { id: 29, text: 'Čaukooo', userName: 'Tomas',profilePic: 'https://cdn.quasar.dev/img/avatar1.jpg', timestamp: new Date('2024-03-01T09:35:00') },
-
   ])
 
+  const users = ref([
+    { userName: 'Matej', profilePic: 'https://cdn.quasar.dev/img/boy-avatar.png' },
+    { userName: 'Tomas', profilePic: 'https://cdn.quasar.dev/img/avatar1.jpg' },
+  ])
 
-  const editor = ref('')
+  function commandsCheck(message: string) {
+    const messageClean = message.replace(/<[^>]*>/g, '').trim();
+
+    if (messageClean === '/list') {
+      const userList = users.value.map(user => user.userName).join(', ');
+      const listMessage = `Users in the channel: ${userList}`;
+
+      const systemMessage = {
+        id: allMessages.value.length + 1,
+        text: listMessage,
+        userName: 'System',
+        profilePic: '',
+        timestamp: new Date(),
+      };
+
+      allMessages.value.push(systemMessage);
+      items.value.push(systemMessage);
+
+      return true
+    }
+    return false
+  }
 
   const items = ref<Message[]>(allMessages.value.slice(-7))
-  console.log(items.value)
 
   function formatTime(timestamp: Date) {
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
+
   const getDayString = (timestamp: Date): string => {
     return timestamp.toISOString().split('T')[0]
   }
 
-  const onLoad = (index: number, done: () => void) => {
-    setTimeout(() => {
-      const sliceStart = Math.max(allMessages.value.length - items.value.length - 7, 0)
-      const sliceEnd = allMessages.value.length - items.value.length
-      const newMessages = allMessages.value.slice(sliceStart, sliceEnd)
-      items.value.unshift(...newMessages)
-      done()
-    }, 2000)
+  const scrollToBottom = () => {
+    const scrollableContainer = document.querySelector('.col.overflow-auto')
+    if (scrollableContainer) {
+      scrollableContainer.scrollTop = scrollableContainer.scrollHeight
+    }
   }
+
+  function addMessage(newMessage: string) {
+    if (commandsCheck(newMessage)) {
+      nextTick(() => {
+        scrollToBottom()
+      })
+      return
+    }
+
+    const message = {
+      id: allMessages.value.length + 1,
+      text: newMessage,
+      userName: 'Matej',
+      profilePic: 'https://cdn.quasar.dev/img/boy-avatar.png',
+      timestamp: new Date(),
+    }
+
+    allMessages.value.push(message)
+
+    items.value.push(message)
+
+    nextTick(() => {
+      scrollToBottom()
+    })
+  }
+
+const onLoad = (index: number, done: () => void) => {
+  setTimeout(() => {
+    const sliceStart = Math.max(allMessages.value.length - items.value.length - 7, 0)
+    const sliceEnd = Math.max(allMessages.value.length - items.value.length, 0)
+    const newMessages = allMessages.value.slice(sliceStart, sliceEnd)
+    items.value.unshift(...newMessages)
+    console.log('Loaded messages', newMessages.length)
+    if (newMessages.length === 0 && infiniteScroll.value) {
+      infiniteScroll.value.stop();
+    }
+    done()
+  }, 1000)
+}
+
 </script>
 
 <template>
   <div class="fix-top bg-white full-width text-h6 q-pl-md text-weight-bold border-bottom content-center text-purple" style="height: 3rem">
     #social
   </div>
-  <div class="col overflow-auto hide-scrollbar" >
-    <q-infinite-scroll @load="onLoad" reverse>
+  <div class="col overflow-auto hide-scrollbar">
+    <q-infinite-scroll ref="infiniteScroll"  @load="onLoad" reverse>
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
           <q-spinner color="purple-1" name="dots" size="40px" />
         </div>
       </template>
-
       <template v-for="(item, index) in items" :key="index">
         <q-chat-message v-if="index === 0 || getDayString(item.timestamp) !== getDayString(items[index - 1].timestamp)"
                         :label="getDayString(item.timestamp)"
                         style="height: 1rem; padding-top: 0;"
                         class="text-purple-1"/>
-
         <message-component
           :time="formatTime(item.timestamp)"
           :message="item.text"
           :user-name="item.userName"
           :profile-pic="item.profilePic"
-          >
-        </message-component>
+        />
       </template>
     </q-infinite-scroll>
-
-
   </div>
-  <div class="fix-bottom bg-white" >
-    <CommandLineComponent v-model="editor" />
+
+  <div class="fix-bottom bg-white">
+    <CommandLineComponent @send-message="addMessage" />
   </div>
 </template>
 
 <style scoped>
-
-
 #message {
   padding: 1rem 1rem;
 }
@@ -113,6 +171,7 @@
 .q-chat-message .q-chat-message--received {
   width: 250px;
 }
+
 .border-bottom {
   border-bottom: 1px solid rgba(38, 0, 101, 0.2);
 }
@@ -122,5 +181,4 @@
   bottom: 0;
   width: 100%;
 }
-
 </style>

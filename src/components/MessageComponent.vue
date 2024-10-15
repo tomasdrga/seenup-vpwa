@@ -1,8 +1,9 @@
 <template>
   <div class="row no-wrap q-pl-md" id="message">
     <div class="q-pr-md">
-      <q-avatar rounded class="q-mt-xs">
+      <q-avatar rounded class="q-mt-xs relative-position">
         <img :src="profilePic" alt="Profile Pic" />
+        <q-badge class="custom-badge q-pa-none absolute" color="green" />
       </q-avatar>
     </div>
     <div>
@@ -10,7 +11,7 @@
         <span class="q-mr-md text-weight-bold text-body1 text-purple">{{ userName }}</span>
         <div class="text-purple-1 text-caption">{{ time }}</div>
       </div>
-      <div v-html="processedMessage" class="text-body2 text-purple"></div>
+      <div v-html="processedMessage" class="text-message text-purple"></div>
     </div>
   </div>
 </template>
@@ -52,5 +53,17 @@ const processedMessage = computed(() => {
   .message-info-row {
     display: flex;
     align-items: center;
+  }
+
+  .custom-badge {
+    width: 12px;
+    height: 10px;
+    border-radius: 50%;
+    bottom: -3px;
+    right: -4px;
+  }
+
+  .text-message {
+    font-size: small;
   }
 </style>
