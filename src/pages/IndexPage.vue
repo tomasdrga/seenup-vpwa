@@ -123,7 +123,7 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
 
 @media (max-width: $breakpoint-sm-min) {
   .padding-left-sm {
-    padding-left: 16px; /* You can adjust this value as needed */
+    padding-left: 16px;
   }
 
   #main {
@@ -135,7 +135,6 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
 
 
 <script>
-// import MessageComponent from 'components/MessageComponent.vue';
 
 export default {
   data() {
