@@ -10,17 +10,17 @@
           </q-avatar>
           SeenUp
         </div>
-        
-        <q-avatar 
-        v-if="$q.screen.lt.sm" 
-        rounded 
+
+        <q-avatar
+        v-if="$q.screen.lt.sm"
+        rounded
         size="lg"
         class="q-ml-md">
         <img src="https://cdn.quasar.dev/img/avatar.png">
       </q-avatar>
       </q-toolbar-title>
       </q-toolbar>
-      
+
 
       <!-- <q-tabs align="left">
         <q-route-tab to="/messages" id="message-tab">
@@ -73,7 +73,7 @@
         <q-avatar rounded size="lg">
           <img src="https://cdn.quasar.dev/img/avatar.png">
         </q-avatar>
-      </div>  
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -121,8 +121,8 @@
 
   #add-button {
     background-color: transparent;
-    color: $purple;
-    border:1px solid $purple;
+    color: $primary;
+    border:1px solid $primary;
   }
 
   #top_actions {
@@ -137,7 +137,7 @@
     .main-header {
       margin-bottom: 8px;
     }
-    
+
   }
 </style>
 
