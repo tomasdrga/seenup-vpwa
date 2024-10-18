@@ -26,6 +26,7 @@
   <div class="command-line rounded-border bg-white text-primary">
     <div>
       <q-editor
+        v-if="!isSmallScreen"
         v-model="editor"
         ref="editorElement"
         min-height="1rem"
@@ -41,24 +42,31 @@
         ['quote'],
       ] : []"
       />
+      <q-input
+        v-else
+        v-model="editor"
+        ref="editorElement"
+        placeholder="Message #social"
+        dense
+        filled
+        bg-color="white"/>
     </div>
     <div class="q-pa-none row justify-between" style="height: 100%;">
       <div>
-        <q-btn round dense flat icon="add" size="sm" class="q-ma-xs"/>
-        <q-btn @click="(toggleToolbar)" round dense flat icon="text_fields" size="sm" class="q-ma-xs"/>
-        <q-btn round dense flat icon="mood" size="sm" class="q-ma-xs"/>
-        <q-btn @click="(toggleUser)" round dense flat icon="alternate_email" size="sm" class="q-ma-xs"/>
+        <q-btn v-if="!isSmallScreen" round dense flat icon="add" size="sm" class="q-ma-xs"/>
+        <q-btn v-if="!isSmallScreen" @click="toggleToolbar" round dense flat icon="text_fields" size="sm" class="q-ma-xs"/>
+        <q-btn v-if="!isSmallScreen" round dense flat icon="mood" size="sm" class="q-ma-xs"/>
+        <q-btn v-if="!isSmallScreen" @click="toggleUser" round dense flat icon="alternate_email" size="sm" class="q-ma-xs"/>
       </div>
-      <q-btn @click="(sendMessage)" round dense flat icon="send" size="sm" class="q-ma-xs"/>
+      <q-btn @click="sendMessage" round dense flat icon="send" size="sm" class="q-ma-xs"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, defineEmits, watch, nextTick } from 'vue';
-import { commands } from 'assets/commands';
+  import { computed, ref, defineEmits, watch, nextTick } from 'vue';
+  import { commands } from 'assets/commands';
   import { useQuasar } from 'quasar';
-
 
   const userOffset = computed(() => users.value.length * -1.5);
 

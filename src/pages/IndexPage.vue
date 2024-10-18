@@ -1,8 +1,6 @@
 <template>
   <q-page class="full-height q-pb-md q-pr-md padding-left-sm">
     <div class="row no-wrap justify-start items-start content-start rounded bg-white" id="main">
-      <q-btn @click="dialog = true" color="primary" flat class="lt-md" icon="menu"/>
-
       <q-dialog v-model="dialog" persistent>
         <div id="side-popup">
           <div class="row items-center justify-center q-py-md q-pb-xl">
@@ -35,26 +33,28 @@
         </div>
       </div>
       <div class="column col-12 col-md-10" id="channel-container">
-        <div class="col-22 text-primary q-pt-md top-bar">
-          <div class="fix-top bg-white full-width text-h6 q-pl-md text-weight-bold border-bottom content-center">
+        <div class="col-auto text-primary q-pt-md top-bar max-width">
+          
+          <div class="fix-top full-width text-h6 q-pl-md text-weight-bold border-bottom content-center">
+            <q-btn @click="dialog = true" color="primary" flat class="lt-md q-pa-none" icon="menu" size="sm"/>
             #social
           </div>
           <q-tabs align="left">
           <q-route-tab to="/messages" id="message-tab">
             <div class="row items-center">
-              <q-icon name="question_answer" class="q-mr-xs"/>
+              <q-icon name="question_answer" class="q-mr-xs gt-xs"/>
               <span class="text-weight-bold">Messages</span>
             </div>
           </q-route-tab>
           <q-route-tab to="/files" id="files-tab">
             <div class="row items-center">
-              <q-icon name="layers" class="q-mr-xs"/>
+              <q-icon name="layers" class="q-mr-xs gt-xs"/>
               <span class="text-weight-bold">Files</span>
             </div>
           </q-route-tab>
           <q-route-tab to="/settings" id="settings-tab">
             <div class="row items-center">
-              <q-icon name="settings" class="q-mr-xs"/>
+              <q-icon name="settings" class="q-mr-xs gt-xs"/>
               <span class="text-weight-bold">Settings</span>
             </div>
           </q-route-tab>
@@ -63,7 +63,7 @@
         <div class="col channel-container max-width">
             <ChannelComponent ref="channelComponent" />
         </div>
-        <div class="col-2 justify-center items-center bottom-bar q-px-md q-py-sm">
+        <div class="col-auto justify-center items-center bottom-bar q-px-md q-py-sm max-width command-line overflow-auto">
           <CommandLineComponent @send-message="handleSendMessage"/>
         </div>
       </div>
@@ -119,8 +119,8 @@
 
 #left-side-bar {
   border-right: 2px solid #00000015;
-  width: full-width;
-  height: full-height;
+  width: 100%;
+  height: 100%;
   min-height: calc(100vh - 70px);
   max-height: calc(100vh - 70px);
 }
@@ -141,6 +141,14 @@
 
 .rounded {
   border-radius: 10px;
+}
+
+.max-width {
+  max-width: 100%;
+}
+
+.command-line {
+  padding: none;
 }
 
 .fix-bottom {
@@ -172,7 +180,7 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
 }
 
 .channel-button {
-  width: full-width;
+  width: 100%;
 }
 
 @media (max-width: $breakpoint-sm-min) {
@@ -182,6 +190,12 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
 
   #main {
     min-height: calc(100vh - 124px);
+  }
+
+  #channel-container {
+    height: calc(100vh - 120px);
+    min-height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
   }
 }
 </style>
