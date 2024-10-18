@@ -10,17 +10,17 @@
           </q-avatar>
           SeenUp
         </div>
-        
-        <q-avatar 
-        v-if="$q.screen.lt.sm" 
-        rounded 
+
+        <q-avatar
+        v-if="$q.screen.lt.sm"
+        rounded
         size="lg"
         class="q-ml-md">
         <img src="https://cdn.quasar.dev/img/avatar.png">
       </q-avatar>
       </q-toolbar-title>
       </q-toolbar>
-      
+
 
       <!-- <q-tabs align="left">
         <q-route-tab to="/messages" id="message-tab">
@@ -46,7 +46,7 @@
 
     <q-drawer show-if-above breakpoint="600" v-model="leftDrawerOpen" side="left" width="75" class="bg-grey row content-between justify-center">
       <div class="row justify-center items-center" id="top_actions">
-        <q-tabs vertical class="text-purple">
+        <q-tabs vertical class="text-primary">
           <q-route-tab to="/messages" id="message-tab">
             <div class="column items-center">
               <q-icon name="home"/>
@@ -73,7 +73,7 @@
         <q-avatar rounded size="lg">
           <img src="https://cdn.quasar.dev/img/avatar.png">
         </q-avatar>
-      </div>  
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -82,7 +82,7 @@
 
     <q-footer reveal class="bg-grey text-primary" v-if="!leftDrawerOpen" height-hint="20">
       <q-toolbar>
-        <q-tabs horizontal class="text-purple row justify-center items-center full-width">
+        <q-tabs horizontal class="text-primary row justify-center items-center full-width">
           <q-route-tab to="/messages" id="message-tab">
             <div class="column items-center">
               <q-icon name="home"/>
@@ -121,8 +121,8 @@
 
   #add-button {
     background-color: transparent;
-    color: $purple;
-    border:1px solid $purple;
+    color: $primary;
+    border:1px solid $primary;
   }
 
   #top_actions {
@@ -137,7 +137,7 @@
     .main-header {
       margin-bottom: 8px;
     }
-    
+
   }
 </style>
 

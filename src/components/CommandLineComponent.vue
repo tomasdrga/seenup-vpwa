@@ -1,16 +1,16 @@
 <template>
-  <div v-if="showCommands" class="command-suggestions absolute bg-white rounded-border text-purple hide-scrollbar q-ml-sm" style="max-width: 300px; max-height: 10rem; overflow:auto; ">
+  <div v-if="showCommands" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar q-mr-lg" style="max-width: 300px; max-height: 10rem; overflow:auto; ">
     <q-list dense>
       <q-item v-for="(command, index) in commands" :key="index" clickable v-ripple @click="selectCommand(command.name)" :class="index === commands.length - 1 ? '' : 'command-item'" >
-        <q-item-section class="q-py-lg" >
-          <q-item-label class="text-bold">{{ command.name }}</q-item-label>
-          <q-item-label caption class="text-purple-1 text-caption" >{{ command.description }}</q-item-label>
+        <q-item-section class="q-py-sm" >
+          <q-item-label class="text-bold command-title">{{ command.name }}</q-item-label>
+          <q-item-label caption class="text-primary command-text" >{{ command.description }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
   </div>
 
-  <div v-if="showUsers" :style="{top: userOffset + 'rem'}" class="command-suggestions absolute bg-white rounded-border text-purple hide-scrollbar q-ml-sm" style="width: 250px; max-height: 10rem; overflow:auto; max-width: 300px ">
+  <div v-if="showUsers" :style="{top: userOffset + 'rem'}" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar q-ml-sm" style="width: 250px; max-height: 10rem; overflow:auto; max-width: 300px ">
     <q-list dense class="q-py-sm">
       <q-item v-for="(user, index) in users" :key="index" clickable v-ripple @click="selectUser(user.userName)" :class="index === users.length - 1 ? '' : 'command-item'">
         <div class="content-center">
@@ -23,11 +23,10 @@
     </q-list>
   </div>
 
-  <div class="command-line rounded-border bg-white q-mb-md q-mx-md text-purple">
+  <div class="command-line rounded-border bg-white text-primary">
     <div>
       <q-editor
         v-model="editor"
-        @keyup = "getCaretPosition"
         ref="editorElement"
         min-height="1rem"
         max-height="5rem"
@@ -56,11 +55,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
+import { computed, ref, defineEmits, watch, nextTick } from 'vue';
+import { commands } from 'assets/commands';
+  import { useQuasar } from 'quasar';
 
-  import { computed } from 'vue';
 
   const userOffset = computed(() => users.value.length * -1.5);
+
+  const $q = useQuasar();
+  const isSmallScreen = computed(() => $q.screen.lt.sm);
+
 
   interface Command {
     name: string;
@@ -72,18 +76,11 @@ import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
   const showToolbar = ref(true);
   const showCommands = ref(false);
   const showUsers = ref(false);
-  const cursorPosition = ref(0);
-  watch(editor, function(newValue) {
-    showCommands.value = newValue.startsWith('/');
-  });
 
-  const getCaretPosition = () => {
-    const el = editorElement.value.$el.querySelector('.q-editor__content');
-    if (el) {
-      cursorPosition.value = el.selectionStart || 0;
-    }
-  };
-  onMounted(getCaretPosition);
+  watch(editor, function(newValue) {
+    let cleanedValue = newValue.replace(/<[^>]*>?/gm, '');
+    showCommands.value = cleanedValue === '/';
+  });
 
   watch(editor, (newValue: string) => {
     const replacedValue: string = newValue.replace(/<br>/g, ' ').replace(/<\/?div>/g, ' ');
@@ -93,28 +90,12 @@ import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
   });
 
   const selectUser = async (user: string) => {
-    console.log('editor value', editor.value);
     const parts = editor.value.split('@');
     const lastPart = parts.pop();
-
-    const newContent = `${parts.join('@')}@${user} ${lastPart}`;
-
-    editor.value = newContent;
-    console.log('editor value inserted user', editor.value);
+    editor.value = `${parts.join('@')}@${user} ${lastPart}`;
     await nextTick();
     showUsers.value = false;
   };
-
-  const commands: Command[] = [
-    { name: '/invite nickName', description: 'Invite a user to the channel' },
-    { name: '/revoke nickName', description: 'Remove a user from the channel' },
-    { name: '/join channelName', description: 'Join a channel (if the channel doesn\'t exist, it is automatically created)' },
-    { name: '/kick nickName', description: 'Remove a user from the channel'},
-    { name: '/quit command', description: 'Close the channel'},
-    { name: '/cancel', description: 'Cancel subscription from the channel'},
-    { name: '/list', description: 'View a list of channel members'},
-    { name: '@nickname', description: 'Address message to specific user '}
-  ];
 
   const users = ref([
     { userName: 'channel', profilePic: 'campaign'},
@@ -145,13 +126,14 @@ import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
   };
 
   const emit = defineEmits(['send-message']);
+
 </script>
 
 
 <style scoped>
   .command-suggestions {
     z-index: 1;
-    top: -8rem;
+    top: 34rem;
   }
 
   .command-item {
@@ -163,23 +145,11 @@ import { ref, defineEmits, watch, nextTick, onMounted } from 'vue';
     border-radius: 5px;
   }
 
-  /* Input block modifier */
-  @media (max-width: 1024px) {
-    .command-line {
-      max-width: 100vw;
-      margin-inline: 5px;
-    }
+  .command-title {
+    font-size: 14px;
   }
 
-  @media (min-width: 1024px) {
-    .command-line {
-      max-width: 74vw;
-    }
-  }
-
-  @media (min-width: 1440px) {
-    .command-line {
-      max-width: 76vw;
-    }
+  .command-text {
+    font-size: 10px;
   }
 </style>
