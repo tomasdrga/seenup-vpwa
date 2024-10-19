@@ -31,7 +31,6 @@
           ref="editorElement"
           placeholder="MESSAGE #SOCIAL"
           class="full-width input-field text-primary"
-
         />
       </div>
 
@@ -48,7 +47,7 @@
 
     <!-- Typing Notification -->
     <div class="q-pl-xs" >
-      <span class="typing-text text-deep-purple-4"  @click="showTyping"><strong>Pavel</strong> is typing</span>
+      <span class="typing-text text-deep-purple-4"  @click="showTyping"><strong>Spicy Pája</strong> is typing</span>
     </div>
   </div>
 </template>
@@ -71,7 +70,7 @@
   });
 
   const $q = useQuasar();
-  
+
   const editorElement = ref(null);
   const editor = ref('');
   const showToolbar = ref(true);
@@ -125,8 +124,8 @@
 
   // Show typing notification
   const showTyping = () => {
-    const baseMessage = 'Ahoj';
-    const extraChars = ', som tu novy Paja, ako sa mate chalani?';
+    const baseMessage = 'Kamarádi';
+    const extraChars = ' mi říkají Pavel, můžeš mi říkat Spicy Pája';
     const user = props.currentChannel?.users[2];
     let charIndex = 0;
 

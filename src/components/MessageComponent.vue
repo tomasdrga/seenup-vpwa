@@ -73,8 +73,10 @@
   });
 
   const processedMessage = computed(() => {
-    return props.message.replace(/\B@([\w\n]+)/g, function(_: string, username: string) {
-      const userExists = props.users.some((user: User) => user.userName === username);
+    return props.message.replace(/@(\S+\s?\S*)(?=\s|$)/g, function(_: string, matchedUsername: string) {
+      const username = matchedUsername.trim(); // Remove trailing and leading whitespaces
+
+      const userExists = props.users.some((user: User) => user.userName.localeCompare(username, undefined, {sensitivity: 'base'}) === 0);
       return userExists ? `<mark>@${username}</mark>` : `@${username}`;
     });
   });
