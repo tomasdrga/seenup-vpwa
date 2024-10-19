@@ -1,5 +1,6 @@
-import { Server } from 'components/models';
+import { Server, ChannelType, Message } from 'components/models';
 import { allChannels} from 'assets/channels';
+import { users } from 'assets/users';
 
 export const servers: Server[] = [
   {
@@ -17,7 +18,7 @@ export const servers: Server[] = [
   }
 ];
 
-export function addChannelToServer(serverId: number, newChannel: { id: number, uuid: string, type: ChannelType, name: string, users: typeof users.value }) {
+export function addChannelToServer(serverId: number, newChannel: { id: number, uuid: string, type: ChannelType, name: string, users: typeof users.value, messages: Message[] }) {
   const server = servers.find(s => s.id === serverId);
   if (server) {
     server.channels.push(newChannel);

@@ -3,13 +3,13 @@
   <div v-if="type === MessageType.user" class="row no-wrap q-pl-md q-py-md" id="message">
     <div class="q-pr-md">
       <q-avatar rounded class="q-mt-xs relative-position">
-        <img :src="userImage" alt="Profile Pic" />
+        <img :src="profilePic" alt="Profile Pic" />
         <q-icon :name="userStatus.icon" :color="userStatus.color" class="custom-badge q-pa-none absolute" size="xs"/>
       </q-avatar>
     </div>
     <div>
       <div class="row items-center">
-        <span class="q-mr-md text-weight-bold text-body1 text-primary">{{ user.userName }}</span>
+        <span class="q-mr-md text-weight-bold text-body1 text-primary">{{ userName }}</span>
         <div class="text-primary text-deep-purple-4">{{ time }}</div>
       </div>
       <div v-html="processedMessage" class="text-message text-primary"></div>
@@ -25,12 +25,12 @@
     <div class="row no-wrap q-pl-md" id="message">
       <div class="q-pr-md">
         <q-avatar rounded class="">
-          <img :src="props.user?.profilePic" alt="Profile Pic" />
+          <img :src="profilePic" alt="Profile Pic" />
         </q-avatar>
       </div>
       <div>
         <div class="row items-center">
-          <span class="q-mr-md text-weight-bold text-body1 text-primary">{{ user.userName }}</span>
+          <span class="q-mr-md text-weight-bold text-body1 text-primary">{{ userName }}</span>
           <div class="text-caption text-deep-purple-4">{{ time }}</div>
         </div>
         <div v-html="processedMessage" class="text-message text-primary"></div>
@@ -46,8 +46,12 @@
   import { MessageType, User } from 'components/models';
 
   const props = defineProps({
-      user: {
-        type: Object as PropType<User>,
+      userName: {
+        type: String,
+        required: true
+      },
+      profilePic: {
+        type: String,
         required: true
       },
       message: {
@@ -75,12 +79,8 @@
     });
   });
 
-  const userImage = computed(() => {
-    return (props.userName === 'SeenUpBot') ? systemImage : props.profilePic;
-  });
-
   const userStatus = computed(() => {
-  const user = users.value.find((user: User) => user.userName === props.userName);
+  const user = props.users.find((user: User) => user.userName === props.userName);
   if (!user) return {icon: 'warning', color: 'red'};
 
   switch (user.status) {
@@ -109,7 +109,6 @@
     border-radius: 50%;
     bottom: -3px;
     right: -4px;
-    background-color: #31c545;
   }
 
   .text-message {

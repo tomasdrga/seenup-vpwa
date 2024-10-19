@@ -19,7 +19,8 @@ export enum ChannelType {
 export interface Message {
   id: number,
   text: string,
-  user: User,
+  userName: string,
+  profilePic: string,
   timestamp: Date,
   type: MessageType,
   channelUuid: string

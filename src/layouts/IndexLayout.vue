@@ -431,6 +431,7 @@ export default {
           type: type,
           name: name.value,
           users: users.value,
+          messages: []
         };
         serverStore.addChannelToServer(1, newChannel); 
         newChannelDialog.value = false;
