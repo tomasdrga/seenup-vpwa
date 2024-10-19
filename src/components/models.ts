@@ -19,8 +19,7 @@ export enum ChannelType {
 export interface Message {
   id: number
   text: string
-  userName: string
-  profilePic: string
+  user: User
   timestamp: Date
   type: MessageType
 }
@@ -31,6 +30,7 @@ export interface User {
 }
 
 export interface Command {
+  type: ChannelType;
   name: string;
   description: string;
 }
@@ -38,7 +38,8 @@ export interface Command {
 export interface Channel {
   type: ChannelType,
   name: string,
-  users: User[]
+  users: User[],
+  messages: Message[]
 }
 
 export interface Server {

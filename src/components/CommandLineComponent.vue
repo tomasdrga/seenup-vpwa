@@ -1,83 +1,76 @@
 <template>
-  <div v-if="showCommands" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar q-mr-lg" style="max-width: 300px; max-height: 10rem; overflow:auto; ">
-    <q-list dense>
-      <q-item v-for="(command, index) in commands" :key="index" clickable v-ripple @click="selectCommand(command.name)" :class="index === commands.length - 1 ? '' : 'command-item'" >
-        <q-item-section class="q-py-sm" >
-          <q-item-label class="text-bold command-title">{{ command.name }}</q-item-label>
-          <q-item-label caption class="text-primary command-text" >{{ command.description }}</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </div>
+  <div class="relative-position">
 
-  <div v-if="showUsers" :style="{top: userOffset + 'rem'}" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar q-ml-sm" style="width: 250px; max-height: 10rem; overflow:auto; max-width: 300px ">
-    <q-list dense class="q-py-sm">
-      <q-item v-for="(user, index) in users" :key="index" clickable v-ripple @click="selectUser(user.userName)" :class="index === users.length - 1 ? '' : 'command-item'">
-        <div class="content-center">
-          <q-avatar size="sm" rounded color="purple" text-color="white">
-            <img :src="user.profilePic" alt="Avatar"/>
-          </q-avatar>
-        </div>
-        <q-item-section class="q-ml-sm">{{user.userName}}</q-item-section>
-      </q-item>
-    </q-list>
-  </div>
+    <!--  Suggestions Boxes -->
+    <CommandSuggestionsBox :show-commands="showCommands" :commands="commands" @command-selected="selectCommand" />
+    <UserSuggestionsBox :show-users="showUsers" :users="users" @user-selected="selectUser" />
 
-  <div class="command-line rounded-border bg-white text-primary">
-    <div>
-      <q-editor
-        v-if="!isSmallScreen"
-        v-model="editor"
-        ref="editorElement"
-        min-height="1rem"
-        max-height="5rem"
-        flat
-        overflow-hidden
-        placeholder="Message #social"
-        toolbar-bg="grey"
-        :toolbar="showToolbar ? [
-        ['bold', 'italic', 'strike'],
-        ['link'],
-        ['unordered', 'ordered'],
-        ['quote'],
-      ] : []"
-      />
-      <q-input
-        v-else
-        v-model="editor"
-        ref="editorElement"
-        placeholder="Message #social"
-        dense
-        filled
-        bg-color="white"/>
-    </div>
-    <div class="q-pa-none row justify-between" style="height: 100%;">
+    <!-- Command Line -->
+    <div class="command-line rounded-border bg-white text-primary">
       <div>
-        <q-btn v-if="!isSmallScreen" round dense flat icon="add" size="sm" class="q-ma-xs"/>
-        <q-btn v-if="!isSmallScreen" @click="toggleToolbar" round dense flat icon="text_fields" size="sm" class="q-ma-xs"/>
-        <q-btn v-if="!isSmallScreen" round dense flat icon="mood" size="sm" class="q-ma-xs"/>
-        <q-btn v-if="!isSmallScreen" @click="toggleUser" round dense flat icon="alternate_email" size="sm" class="q-ma-xs"/>
+        <q-editor
+          v-if="!isSmallScreen"
+          v-model="editor"
+          ref="editorElement"
+          min-height="1rem"
+          max-height="5rem"
+          flat
+          overflow-hidden
+          placeholder="Message #social"
+          toolbar-bg="grey"
+          :toolbar="showToolbar ? [
+          ['bold', 'italic', 'strike'],
+          ['link'],
+          ['unordered', 'ordered'],
+          ['quote'],
+        ] : []"
+        />
+        <input
+          v-else
+          v-model="inputValue"
+          ref="editorElement"
+          placeholder="MESSAGE #SOCIAL"
+          class="full-width input-field text-primary"
+
+        />
       </div>
-      <q-btn @click="sendMessage" round dense flat icon="send" size="sm" class="q-ma-xs"/>
+
+      <div class="q-pa-none row justify-between" style="height: 100%;">
+        <div>
+          <q-btn v-if="!isSmallScreen" round dense flat icon="add" size="sm" class="q-ma-xs"/>
+          <q-btn v-if="!isSmallScreen" @click="toggleToolbar" round dense flat icon="text_fields" size="sm" class="q-ma-xs"/>
+          <q-btn v-if="!isSmallScreen" round dense flat icon="mood" size="sm" class="q-ma-xs"/>
+          <q-btn v-if="!isSmallScreen" @click="toggleUser" round dense flat icon="alternate_email" size="sm" class="q-ma-xs"/>
+        </div>
+        <q-btn @click="sendMessage" round dense flat icon="send" size="sm" class="q-ma-xs"/>
+      </div>
+    </div>
+
+    <!-- Typing Notification -->
+    <div class="q-pl-xs" >
+      <span class="typing-text text-deep-purple-4"  @click="showTyping"><strong>Pavel</strong> is typing</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, defineEmits, watch, nextTick } from 'vue';
-  import { commands } from 'assets/commands';
+  import { computed, ref, defineEmits, watch, nextTick, defineProps } from 'vue';
+
   import { useQuasar } from 'quasar';
 
-  const userOffset = computed(() => users.value.length * -1.5);
+  import { commands as allCommands } from 'assets/commands';
+  import { Channel} from 'components/models';
+  import CommandSuggestionsBox from 'components/CommandSuggestionBox.vue';
+  import UserSuggestionsBox from 'components/UserSuggestionBox.vue';
+
+  const props = defineProps({
+    currentChannel: {
+      type: Object as ()=> Channel,
+      required: true
+    }
+  });
 
   const $q = useQuasar();
-  const isSmallScreen = computed(() => $q.screen.lt.sm);
-
-
-  interface Command {
-    name: string;
-    description: string;
-  }
 
   const editorElement = ref(null);
   const editor = ref('');
@@ -85,11 +78,23 @@
   const showCommands = ref(false);
   const showUsers = ref(false);
 
+
+  const isSmallScreen = computed(() => $q.screen.lt.sm);
+  const commands = computed(() => allCommands.filter(cmd => cmd.type === props.currentChannel.type));
+  const users = computed(() => props.currentChannel.users);
+  const inputValue = computed({
+    get() {
+      return editor.value.replace(/<[^>]*>?/gm, '');
+    },
+    set(value) {
+      editor.value = value;
+    }
+  });
+
   watch(editor, function(newValue) {
     let cleanedValue = newValue.replace(/<[^>]*>?/gm, '');
     showCommands.value = cleanedValue === '/';
   });
-
   watch(editor, (newValue: string) => {
     const replacedValue: string = newValue.replace(/<br>/g, ' ').replace(/<\/?div>/g, ' ');
     const cleanValue: string = replacedValue.replace(/<[^>]*>?/gm, '');
@@ -104,60 +109,78 @@
     await nextTick();
     showUsers.value = false;
   };
-
-  const users = ref([
-    { userName: 'channel', profilePic: 'campaign'},
-    { userName: 'matej', profilePic: 'https://cdn.quasar.dev/img/boy-avatar.png' },
-    { userName: 'tomas', profilePic: 'https://cdn.quasar.dev/img/avatar1.jpg' },
-  ])
-
-  const toggleUser = async () => {
-    showUsers.value = !showUsers.value;
-    editor.value = editor.value + '@';
-  };
-
-  const toggleToolbar = () => {
-    showToolbar.value = !showToolbar.value;
-  };
-
   const selectCommand = async (command: string) => {
     editor.value = command;
     await nextTick();
     showCommands.value = false;
   };
 
+  const toggleUser = async () => {
+    showUsers.value = !showUsers.value;
+    editor.value = editor.value + '@';
+  };
+  const toggleToolbar = () => {
+    showToolbar.value = !showToolbar.value;
+  };
+
+  // Show typing notification
+  const showTyping = () => {
+    const baseMessage = 'Ahoj';
+    const extraChars = ', som tu novy Paja, ako sa mate chalani?';
+    const user = props.currentChannel?.users[2];
+    let charIndex = 0;
+
+    const dialog = $q.dialog({
+      title: `<div class="text-primary">${user.userName}</div>`,
+      message: baseMessage,
+      position: 'bottom',
+      persistent: false,
+      html: true,
+      ok: false,
+    });
+
+    // Simulate typing effect
+    setInterval(() => {
+      charIndex++;
+      const newMessage = `${baseMessage}${extraChars.substring(0, charIndex) || ''}`;
+
+      dialog.update({
+        message: `<div class="text-primary">${newMessage}</div>`,
+        html: true
+      });
+    }, 200);
+  };
+
+  // Emit the message to the parent component
   const sendMessage = (): void => {
     if (editor.value.trim() !== '') {
       emit('send-message', editor.value);
       editor.value = '';
     }
   };
-
   const emit = defineEmits(['send-message']);
-
 </script>
 
-
 <style scoped>
-  .command-suggestions {
-    z-index: 1;
-    top: 34rem;
-  }
-
-  .command-item {
-    border-bottom: 1px solid #00000015;
-  }
 
   .rounded-border {
     border: 1px solid #00000015;
     border-radius: 5px;
   }
 
-  .command-title {
-    font-size: 14px;
+  .input-field {
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 0.5rem;
+    width: 100%;
+  }
+  .input-field::placeholder {
+    color: #260065;
   }
 
-  .command-text {
+  .typing-text {
     font-size: 10px;
   }
+
 </style>

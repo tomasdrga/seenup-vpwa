@@ -10,9 +10,9 @@
           <div class="text-primary text-body">
             <q-list class="row rounded-borders text-weight-bold">
               <q-expansion-item default-opened label="Channels" style="width: 100%;">
-                <q-btn flat align="left" style="width: 100%;" v-for="(channel, index) in currentServer.channels" :key="index">
+                <q-btn flat align="left" style="width: 100%;" v-for="(channel, index) in currentServer.channels" :key="index" @click="setCurrentChannel(channel)">
                   <q-icon :name="channel.type === 'public' ? 'tag' : 'lock'" size="xs" />
-                  <span class="text-caption">{{ channel.name }}</span>
+                  <span class="text-caption" :class="{ 'text-weight-bold': index === 0 }">{{ channel.name }}</span>
                 </q-btn>
               </q-expansion-item>
             </q-list>
@@ -24,9 +24,9 @@
         <div class="text-primary text-body">
           <q-list class="rounded-borders text-weight-bold">
             <q-expansion-item default-opened label="Channels" style="width: 100%;">
-              <q-btn flat align="left" style="width: 100%;" v-for="(channel, index) in currentServer.channels" :key="index">
+              <q-btn flat align="left" style="width: 100%;" v-for="(channel, index) in currentServer.channels" :key="index" @click="setCurrentChannel(channel)" :class="{ 'text-weight-bold': index === 0 }">
                 <q-icon :name="channel.type === 'public' ? 'tag' : 'lock'" size="xs" />
-                <span class="text-caption">{{ channel.name }}</span>
+                <span class="text-caption" :class="{ 'text-weight-bold': index === 0 }">{{ channel.name }}</span>
               </q-btn>
             </q-expansion-item>
           </q-list>
@@ -34,10 +34,10 @@
       </div>
       <div class="column col-12 col-md-10" id="channel-container">
         <div class="col-auto text-primary q-pt-md top-bar max-width">
-          
+
           <div class="fix-top full-width text-h6 q-pl-md text-weight-bold border-bottom content-center">
             <q-btn @click="dialog = true" color="primary" flat class="lt-md q-pa-none" icon="menu" size="sm"/>
-            #social
+            #{{ currentChannel.name }}
           </div>
           <q-tabs align="left">
           <q-route-tab to="/messages" id="message-tab">
@@ -60,11 +60,11 @@
           </q-route-tab>
         </q-tabs>
         </div>
-        <div class="col channel-container max-width">
-            <ChannelComponent ref="channelComponent" />
+        <div class="col channel-container max-width overflow-auto hide-scrollbar">
+            <ChannelComponent ref="channelComponent" :current-server="currentServer" :current-channel="currentChannel"/>
         </div>
-        <div class="col-auto justify-center items-center bottom-bar q-px-md q-py-sm max-width command-line overflow-auto">
-          <CommandLineComponent @send-message="handleSendMessage"/>
+        <div class="col-auto justify-center items-center bottom-bar q-px-md q-py-sm max-width command-line">
+          <CommandLineComponent @send-message="handleSendMessage" :current-channel="currentChannel"/>
         </div>
       </div>
     </div>
@@ -76,6 +76,7 @@
   import CommandLineComponent from 'components/CommandLineComponent.vue';
   import ChannelComponent from 'src/components/ChannelComponent.vue';
   import { servers} from 'assets/servers';
+  import { Channel } from 'components/models';
 
 
   export default defineComponent({
@@ -83,6 +84,7 @@
     setup() {
       const channelComponent = ref<InstanceType<typeof ChannelComponent> | null>(null);
       const currentServer = ref(servers[0]);
+      const currentChannel = ref(currentServer.value.channels[0]);
       const handleSendMessage = (message: string) => {
         if (channelComponent.value) {
           channelComponent.value.onMessageSent(message);
@@ -90,11 +92,16 @@
           console.warn('channelComponent is not available yet.');
         }
       };
+      const setCurrentChannel = (channel: Channel) => {
+        currentChannel.value = channel;
+      };
 
       return {
         handleSendMessage,
         channelComponent,
         currentServer,
+        currentChannel,
+        setCurrentChannel,
       };
     },
     data() {
@@ -119,8 +126,8 @@
 
 #left-side-bar {
   border-right: 2px solid #00000015;
-  width: 100%;
-  height: 100%;
+  width: full-width;
+  height: full-width;
   min-height: calc(100vh - 70px);
   max-height: calc(100vh - 70px);
 }
@@ -144,7 +151,7 @@
 }
 
 .max-width {
-  max-width: 100%;
+  max-width: full-width;
 }
 
 .command-line {
@@ -154,11 +161,11 @@
 .fix-bottom {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: full-width;
 }
 
 .full-height {
-  min-height: 100%;
+  min-height: full-width;
 }
 
 .text-smaller {
@@ -180,7 +187,7 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
 }
 
 .channel-button {
-  width: 100%;
+  width: full-width;
 }
 
 @media (max-width: $breakpoint-sm-min) {
