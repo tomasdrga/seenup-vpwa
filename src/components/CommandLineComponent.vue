@@ -73,12 +73,6 @@
   const $q = useQuasar();
   const isSmallScreen = computed(() => $q.screen.lt.sm);
 
-
-  interface Command {
-    name: string;
-    description: string;
-  }
-
   const editorElement = ref(null);
   const editor = ref('');
   const showToolbar = ref(true);

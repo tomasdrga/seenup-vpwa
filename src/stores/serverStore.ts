@@ -1,8 +1,11 @@
-import { ChannelType, Server } from 'components/models';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 import { users } from 'assets/users';
+import { ChannelType, Channel, Server} from 'components/models';
 
-export const servers: Server[] = [
-  {
+export const useServerStore = defineStore('server', () => {
+  const servers = ref<Server[]>([
+    {
     id: 1, 
     uuid: 'c8a023ed',
     name: 'SeenUp Server',
@@ -23,13 +26,19 @@ export const servers: Server[] = [
       { id: 3, uuid: '00bc77c9', type: ChannelType.private, name: 'Projects', users: users.value }
     ],
   }
-];
+  ]);
 
-export function addChannelToServer(serverId: number, newChannel: { id: number, uuid: string, type: ChannelType, name: string, users: typeof users.value }) {
-  const server = servers.find(s => s.id === serverId);
-  if (server) {
-    server.channels.push(newChannel);
-  } else {
-    console.error(`Server with id ${serverId} not found`);
-  }
-}
+  const addChannelToServer = (serverId: number, newChannel: Channel) => {
+    const server = servers.value.find(s => s.id === serverId);
+    if (server) {
+      server.channels.push(newChannel);
+    } else {
+      console.error(`Server with id ${serverId} not found`);
+    }
+  };
+
+  return {
+    servers,
+    addChannelToServer,
+  };
+});

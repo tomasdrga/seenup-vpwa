@@ -3,7 +3,7 @@
     <div class="q-pr-md">
       <q-avatar rounded class="q-mt-xs relative-position">
         <img :src="userImage" alt="Profile Pic" />
-        <q-badge class="custom-badge q-pa-none absolute" color="green" />
+        <q-icon :name="userStatus.icon" :color="userStatus.color" class="custom-badge q-pa-none absolute" size="xs"/>
       </q-avatar>
     </div>
     <div>
@@ -76,6 +76,22 @@
   const userImage = computed(() => {
     return (props.userName === 'SeenUpBot') ? systemImage : props.profilePic;
   });
+
+  const userStatus = computed(() => {
+  const user = users.value.find((user: User) => user.userName === props.userName);
+  if (!user) return {icon: 'warning', color: 'red'};
+
+  switch (user.status) {
+    case 'Active':
+      return {icon: 'radio_button_checked', color: 'green'};
+    case 'Offline':
+      return {icon: 'radio_button_checked', color: 'grey-6'};
+    case 'Do not disturb':
+      return {icon: 'nightlight', color: 'primary'};
+    default:
+      return {icon: 'warning', color: 'red'};
+  }
+});
 </script>
 
 <style>

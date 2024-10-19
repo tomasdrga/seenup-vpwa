@@ -23,11 +23,14 @@ export interface Message {
   profilePic: string
   timestamp: Date
   type: MessageType
+  channelUuid: string
 }
 
 export interface User {
+  id: number
   userName: string
   profilePic: string
+  status: string
 }
 
 export interface Command {
@@ -36,12 +39,16 @@ export interface Command {
 }
 
 export interface Channel {
+  id: number,
+  uuid: string,
   type: ChannelType,
   name: string,
-  users: User[]
+  users: User[],
 }
 
 export interface Server {
+  id: number,
+  uuid: string,
   name: string;
   channels: Channel[];
 }
