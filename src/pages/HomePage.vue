@@ -34,7 +34,7 @@
           <q-card flat bordered class="bg-grey">
             <q-card-section>
               <h3 class="text-h5 text-center text-weight-bold">80% Less Boring</h3>
-              <p class="text-center">Say goodbye to snooze-fest meetings! We keep it!</p>
+              <p class="text-center">Say goodbye to snooze-fest meetings! We keep it! Bli Skrt Vruum</p>
             </q-card-section>
           </q-card>
         </div>
@@ -43,7 +43,7 @@
           <q-card flat bordered class="bg-grey">
             <q-card-section>
               <h3 class="text-h5 text-center text-weight-bold">99% Collab</h3>
-              <p class="text-center">Our platform makes teamwork easier!</p>
+              <p class="text-center">Our platform makes teamwork easier! Bla Blop Blo Blup Skrut Brr</p>
             </q-card-section>
           </q-card>
         </div>

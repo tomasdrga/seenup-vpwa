@@ -27,8 +27,6 @@
         </q-card-section>
 
         <q-card-section class="col-8 q-pt-none">
-          <q-toggle v-model="accept" label="I accept the license and terms" />
-
           <div class="row q-pt-xl justify-end">
             <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
             <q-btn label="Submit" type="submit" color="primary"/>
@@ -49,40 +47,25 @@ export default {
 
     const name = ref(null)
     const password = ref(null)
-    const accept = ref(false)
 
     return {
       name,
       password,
-      accept,
 
       onSubmit () {
-        if (accept.value !== true) {
+        if (name.value !== 'matej' || password.value !== '123') {
           $q.notify({
             progress: true,
             color: 'grey',
             textColor: 'primary',
             icon: 'warning',
-            message: 'You need to accept the license and terms first',
+            message: 'Username or password is incorrect',
             position: 'top',
             actions: [
               { icon: 'close', color: 'primary', round: true, handler: () => { /* ... */ } }
             ]
           })
         }
-        else if (name.value !== 'expectedUsername' || password.value !== 'expectedPassword') {
-        $q.notify({
-          progress: true,
-          color: 'grey',
-          textColor: 'primary',
-          icon: 'warning',
-          message: 'Username or password is incorrect',
-          position: 'top',
-          actions: [
-            { icon: 'close', color: 'primary', round: true, handler: () => { /* ... */ } }
-          ]
-        })
-      }
         else {
           $q.notify({
             progress: true,
@@ -92,6 +75,7 @@ export default {
             message: 'Logged in successfully',
             position: 'top'
           })
+          window.location.href = 'http://localhost:9000/client/c8a023ed/62e0d22a';
         }
       },
 

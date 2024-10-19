@@ -11,73 +11,103 @@
             SeenUp
           </div>
 
-          <q-btn v-if="$q.screen.lt.sm" flat class="q-pa-none">
-            <q-avatar rounded size="lg">
-              <img :src="user.profilePic" alt="Profile Pic" />
-            </q-avatar>
-            <q-menu
-              anchor="bottom right"
-              self="bottom left"
-              :offset="[10, 0]"
-              class="q-pt-md text-primary">
-              <q-list>
-                <q-item clickable v-close-popup>
-                  <q-item-section class="col-3">
-                    <q-avatar rounded size="lg">
-                      <img :src="user.profilePic" alt="Profile Pic" />
-                    </q-avatar>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-weight-bold text-no-wrap">{{ user.userName }}</q-item-label>
-                    <q-item-label caption class="text-purple-4">
-                      <q-icon :name="userStatus.icon" :color="userStatus.color"></q-icon>{{ user.status }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
+          <div class="row items-center">
+            <q-btn v-if="$q.screen.lt.sm" round icon="add" size="sm" class="q-mr-md" id="add-button">
+              <q-menu
+                anchor="bottom right"
+                self="bottom left"
+                :offset="[10, 0]"
+                class="text-primary">
+                <q-list>
+                  <q-item clickable v-close-popup @click="newChannelDialog = true">
+                    <q-item-section class="col-1">
+                      <q-icon name="add"></q-icon>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-weight-bold text-no-wrap">Create new channel</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-separator />
+                  <q-item clickable v-close-popup>
+                    <q-item-section class="col-1">
+                      <q-icon name="add"></q-icon>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-weight-bold text-no-wrap">Invite people</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
 
-                <q-item clickable class="text-primary">
-                  <q-item-section side>
-                    <q-icon name="keyboard_arrow_left" />
-                  </q-item-section>
-                  <q-item-section class="text-right">Status</q-item-section>
+            <q-btn v-if="$q.screen.lt.sm" flat class="q-pa-none">
+              <q-avatar rounded size="lg">
+                <img :src="user.profilePic" alt="Profile Pic" />
+              </q-avatar>
+              <q-menu
+                anchor="bottom right"
+                self="bottom left"
+                :offset="[10, 0]"
+                class="q-pt-md text-primary">
+                <q-list>
+                  <q-item clickable v-close-popup>
+                    <q-item-section class="col-3">
+                      <q-avatar rounded size="lg">
+                        <img :src="user.profilePic" alt="Profile Pic" />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-weight-bold text-no-wrap">{{ user.userName }}</q-item-label>
+                      <q-item-label caption class="text-purple-4">
+                        <q-icon :name="userStatus.icon" :color="userStatus.color"></q-icon>{{ user.status }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
 
-                  <q-menu anchor="top end" self="top start" class="text-primary">
-                    <q-list>
-                      <q-item dense clickable @click="changeStatus('Active')">
-                        <q-item-section>
-                          <q-item-label>
-                            <q-icon name="radio_button_checked" color="green" class="q-pr-sm"></q-icon>Active
-                          </q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item dense clickable @click="changeStatus('Do not disturb')">
-                        <q-item-section>
-                          <q-item-label>
-                            <q-icon name="nightlight" color="primary" class="q-pr-sm"></q-icon>Do not disturb
-                          </q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item dense clickable @click="changeStatus('Offline')">
-                        <q-item-section>
-                          <q-item-label>
-                            <q-icon name="radio_button_unchecked" color="grey-6" class="q-pr-sm"></q-icon>Offline
-                          </q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-item>
-                <q-separator />
-                <q-item clickable v-close-popup>
-                  <q-item-section class="text-right">Settings</q-item-section>
-                </q-item>
-                <q-separator />
-                <q-item clickable v-close-popup>
-                  <q-item-section class="text-right">Sign out</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+                  <q-item clickable class="text-primary">
+                    <q-item-section side>
+                      <q-icon name="keyboard_arrow_left" />
+                    </q-item-section>
+                    <q-item-section class="text-right">Status</q-item-section>
+
+                    <q-menu anchor="top end" self="top start" class="text-primary">
+                      <q-list>
+                        <q-item dense clickable @click="changeStatus('Active')">
+                          <q-item-section>
+                            <q-item-label>
+                              <q-icon name="radio_button_checked" color="green" class="q-pr-sm"></q-icon>Active
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item dense clickable @click="changeStatus('Do not disturb')">
+                          <q-item-section>
+                            <q-item-label>
+                              <q-icon name="nightlight" color="primary" class="q-pr-sm"></q-icon>Do not disturb
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item dense clickable @click="changeStatus('Offline')">
+                          <q-item-section>
+                            <q-item-label>
+                              <q-icon name="radio_button_unchecked" color="grey-6" class="q-pr-sm"></q-icon>Offline
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-item>
+                  <q-separator />
+                  <q-item clickable v-close-popup>
+                    <q-item-section class="text-right">Settings</q-item-section>
+                  </q-item>
+                  <q-separator />
+                  <q-item clickable v-close-popup>
+                    <q-item-section class="text-right">Sign out</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -195,7 +225,7 @@
                 <q-item-section @click="settings = true">Settings</q-item-section>
               </q-item>
               <q-separator />
-              <q-item clickable v-close-popup>
+              <q-item clickable v-close-popup to="/login">
                 <q-item-section>Sign out</q-item-section>
               </q-item>
             </q-list>
