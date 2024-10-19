@@ -107,7 +107,7 @@
   function commandsCheck(message: string) {
     const messageClean = message.replace(/<[^>]*>/g, '').trim();
     if (messageClean === '/list') {
-      const otherUsers = users.value.filter(user => user.userName !== userLoggedIn).map(user => '@' + user.userName).join(', ');
+      const otherUsers = users.value.filter(user => user.userName !== userLoggedIn).map(user => '@' + user.userName).join(' , ');
       const listMessage = `Users here: ${otherUsers} ... and you!`;
       // Create a system message with the list of users
       const systemMessage = {
