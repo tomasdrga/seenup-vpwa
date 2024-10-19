@@ -71,7 +71,7 @@
   });
 
   const $q = useQuasar();
-
+  
   const editorElement = ref(null);
   const editor = ref('');
   const showToolbar = ref(true);

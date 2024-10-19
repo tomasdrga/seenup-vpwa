@@ -1,30 +1,34 @@
 <template>
-  <q-infinite-scroll ref="infiniteScroll" @load="onLoad" reverse>
-    <template v-slot:loading>
-      <div class="row justify-center q-my-md">
-        <q-spinner color="deep-purple-4" name="dots" size="40px" />
-      </div>
-    </template>
+  <div v-if="showInfiniteScroll">
+      <q-infinite-scroll ref="infiniteScroll" @load="onLoad" reverse>
+        <template v-slot:loading>
+          <div class="row justify-center q-my-md">
+            <q-spinner color="deep-purple-4" name="dots" size="40px" />
+          </div>
+        </template>
 
-    <!--  Generate the chat messages -->
-    <template v-for="(item, index) in items" :key="index">
-      <q-chat-message v-if="index === 0 || getDayString(item.timestamp) !== getDayString(items[index - 1].timestamp)"
-                      :label="getDayString(item.timestamp)"
-                      style="height: 1rem; padding-top: 0;"
-                      class="text-deep-purple-4"/>
-      <message-component
-        :time="formatTime(item.timestamp)"
-        :message="item.text"
-        :user = "item.user"
-        :type="item.type"
-        :users="currentChannel.users"
-      />
-    </template>
-  </q-infinite-scroll>
+        <!--  Generate the chat messages -->
+        <template v-for="(item, index) in items" :key="index">
+          <q-chat-message v-if="index === 0 || getDayString(item.timestamp) !== getDayString(items[index - 1].timestamp)"
+                          :label="getDayString(item.timestamp)"
+                          style="height: 1rem; padding-top: 0;"
+                          class="text-deep-purple-4"/>
+          <message-component
+            :time="formatTime(item.timestamp)"
+            :message="item.text"
+            :user-name="item.userName"
+            :profile-pic="item.profilePic"
+            :type="item.type"
+            :users="currentChannel.users"
+          />
+        </template>
+      </q-infinite-scroll>
+    </div>
 </template>
 
+          
 <script setup lang="ts">
-  import { computed, nextTick, ref, reactive } from 'vue';
+  import { computed, nextTick, ref, reactive, watch } from 'vue';
 
   import { useQuasar, QInfiniteScroll } from 'quasar';
 
@@ -33,13 +37,13 @@
   import { users, system } from 'assets/users';
   import { ChannelType, Message, MessageType, User, Channel, Server } from 'components/models';
   import { formatTime, getDayString, scrollToBottom } from './channel-helpers';
-
+ 
   const props = defineProps({
     currentServer: {
       type: Object as () => Server,
       required: true
     },
-    currentChannel: {
+    channel: {
       type: Object as () => Channel,
       required: true
     }
@@ -48,22 +52,50 @@
   const $q = useQuasar();
   const rCurrentServer = reactive(props.currentServer)
   const infiniteScroll = ref<QInfiniteScroll | null>(null);
-  const items = ref<Message[]>(allMessages.value.slice(-10))
+  const showInfiniteScroll = ref(false);
+  const items = ref<Message[]>([]);
   const userLoggedIn = 'Matej';
+  
+  // Reset messages, used when switching between channels multiple times
+  const resetMessages = () => {
+    items.value = allMessages.value
+      .filter(message => message.channelUuid === props.channel.uuid)
+      .slice(-10);
+
+    showInfiniteScroll.value = false;
+
+    nextTick(() => {
+      showInfiniteScroll.value = true;
+      if (infiniteScroll.value) {
+        infiniteScroll.value.reset();
+      }
+    });
+  };
+  
+  // Watch for channel
+  watch(() => props.channel, () => {
+    resetMessages();
+  }, { immediate: true });
 
   // Handling the load event in an infinite scroll
   const onLoad = (index: number, done: () => void) => {
     setTimeout(() => {
-      const sliceStart = Math.max(allMessages.value.length - items.value.length - 10, 0)
-      const sliceEnd = Math.max(allMessages.value.length - items.value.length, 0)
-      const newMessages = allMessages.value.slice(sliceStart, sliceEnd)
-      items.value.unshift(...newMessages)
+      const sliceStart = Math.max(allMessages.value.length - items.value.length - 10, 0);
+      const sliceEnd = Math.max(allMessages.value.length - items.value.length, 0);
+
+      const newMessages = allMessages.value
+        .slice(sliceStart, sliceEnd)
+        .filter(message => message.channelUuid === props.channel.uuid);
+
+      items.value.unshift(...newMessages);
+
       if (newMessages.length === 0 && infiniteScroll.value) {
-        infiniteScroll.value.stop();
+        infiniteScroll.value.stop();  
       }
-      done()
-    }, 2000)
-  }
+
+      done();
+    }, 1000);
+  };
 
   // Checking the message for commands
   function commandsCheck(message: string) {
@@ -177,11 +209,9 @@
 </script>
 
 <style scoped>
-
   .message-alert {
     background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
   }
-
 </style>
