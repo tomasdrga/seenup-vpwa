@@ -1,27 +1,19 @@
-import { ChannelType, Server } from 'components/models';
-import { users } from 'assets/users';
+import { Server } from 'components/models';
+import { allChannels} from 'assets/channels';
 
 export const servers: Server[] = [
   {
     id: 1, 
     uuid: 'c8a023ed',
     name: 'SeenUp Server',
-    channels: [
-      { id: 1, uuid: '62e0d22a', type: ChannelType.public, name: 'General', users: users.value },
-      { id: 2, uuid: '4a618c6b', type: ChannelType.public, name: 'StandUp', users: users.value },
-      { id: 3, uuid: '00bc77c9', type: ChannelType.private, name: 'Projects', users: users.value }
-    ],
+    channels: allChannels,
   },
 
   {
     id: 2, 
     uuid: '45ab8530',
     name: 'Server 2',
-    channels: [
-      { id: 1, uuid: '62e0d22a', type: ChannelType.public, name: 'General', users: users.value },
-      { id: 2, uuid: '4a618c6b', type: ChannelType.public, name: 'StandUp', users: users.value },
-      { id: 3, uuid: '00bc77c9', type: ChannelType.private, name: 'Projects', users: users.value }
-    ],
+    channels: allChannels,
   }
 ];
 
@@ -32,4 +24,4 @@ export function addChannelToServer(serverId: number, newChannel: { id: number, u
   } else {
     console.error(`Server with id ${serverId} not found`);
   }
-}
+};

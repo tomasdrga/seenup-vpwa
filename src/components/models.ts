@@ -1,10 +1,10 @@
 export interface Todo {
-  id: number;
-  content: string;
+  id: number,
+  content: string
 }
 
 export interface Meta {
-  totalCount: number;
+  totalCount: number
 }
 
 export enum MessageType {
@@ -17,25 +17,25 @@ export enum ChannelType {
 }
 
 export interface Message {
-  id: number
-  text: string
-  userName: string
-  profilePic: string
-  timestamp: Date
-  type: MessageType
+  id: number,
+  text: string,
+  user: User,
+  timestamp: Date,
+  type: MessageType,
   channelUuid: string
 }
 
 export interface User {
-  id: number
-  userName: string
-  profilePic: string
+  id: number,
+  userName: string,
+  profilePic: string,
   status: string
 }
 
 export interface Command {
-  name: string;
-  description: string;
+  type: ChannelType,
+  name: string,
+  description: string
 }
 
 export interface Channel {
@@ -44,11 +44,12 @@ export interface Channel {
   type: ChannelType,
   name: string,
   users: User[],
+  messages: Message[]
 }
 
 export interface Server {
   id: number,
   uuid: string,
-  name: string;
-  channels: Channel[];
+  name: string,
+  channels: Channel[]
 }

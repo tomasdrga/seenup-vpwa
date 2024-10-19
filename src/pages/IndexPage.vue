@@ -20,7 +20,7 @@
                   @click="navigateToChannel(channel.uuid)"
                 >
                   <q-icon :name="channel.type === 'public' ? 'tag' : 'lock'" size="xs" />
-                  <span class="text-caption text-uppercase">{{ channel.name }}</span>
+                  <span class="text-caption text-uppercase" :class="{ 'text-weight-bold': index === 0 }">{{ channel.name }}</span>
                   <q-btn flat icon="more_vert" class="edit-icon q-pa-none" size="xs" @click="icon = true" />
                 </q-btn>
               </q-expansion-item>
@@ -40,10 +40,11 @@
                 v-for="(channel, index) in currentServer.channels"
                 :key="index"
                 class="channel-item"
+                :class="{ 'text-weight-bold': index === 0 }"
                 @click="navigateToChannel(channel.uuid)"
               >
                 <q-icon :name="channel.type === 'public' ? 'tag' : 'lock'" size="xs" />
-                <span class="text-caption">{{ channel.name }}</span>
+                <span class="text-caption" :class="{ 'text-weight-bold': index === 0 }>{{ channel.name }}</span>
                 <q-btn flat icon="more_vert" class="edit-icon q-pa-none" size="xs" @click="icon = true" />
               </q-btn>
             </q-expansion-item>
@@ -77,11 +78,12 @@
             </q-route-tab>
           </q-tabs>
         </div>
-        <div class="col channel-container max-width overflow-auto">
-          <ChannelComponent :channel="currentChannel" ref="channelComponent" />
+        <div class="col channel-container max-width overflow-auto hide-scrollbar">
+          <ChannelComponent :current-server="currentServer" :channel="currentChannel" ref="channelComponent" />
         </div>
         <div class="col-auto justify-center items-center bottom-bar q-px-md q-py-sm max-width command-line">
-          <CommandLineComponent @send-message="handleSendMessage"/>
+          <CommandLineComponent @send-message="handleSendMessage" :current-channel="currentChannel"/>
+        </div>
         </div>
       </div>
     </div>
@@ -213,6 +215,8 @@ import { useQuasar } from 'quasar';
 import CommandLineComponent from 'components/CommandLineComponent.vue';
 import ChannelComponent from 'src/components/ChannelComponent.vue';
 import { useServerStore } from '../stores/serverStore';
+// import { servers } from 'assets/servers';
+// import { Channel } from 'components/models';
 
 export default defineComponent({
   components: { ChannelComponent, CommandLineComponent },
@@ -228,7 +232,7 @@ export default defineComponent({
     const serverStore = useServerStore();
     const currentServer = ref(serverStore.servers.find(server => server.uuid === route.params.serverId) || serverStore.servers[0]);
     const currentChannel = ref(currentServer.value.channels.find(channel => channel.uuid === route.params.channelId) || currentServer.value.channels[0]);
-
+    
     const channelComponent = ref<InstanceType<typeof ChannelComponent> | null>(null);
   
     const handleSendMessage = (message: string) => {
@@ -334,7 +338,7 @@ export default defineComponent({
 }
 
 .max-width {
-  max-width: 100%;
+  max-width: full-width;
 }
 
 .command-line {
@@ -344,11 +348,11 @@ export default defineComponent({
 .fix-bottom {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: full-width;
 }
 
 .full-height {
-  min-height: 100%;
+  min-height: full-width;
 }
 
 .text-smaller {
@@ -370,7 +374,7 @@ body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.
 }
 
 .channel-button {
-  width: 100%;
+  width: full-width;
 }
 
 @media (max-width: $breakpoint-sm-min) {

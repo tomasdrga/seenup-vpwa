@@ -16,6 +16,13 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/register',
+    component: () => import('layouts/HomeLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/RegisterPage.vue') },
+    ],
+  },
+  {
     path: '/client/:serverId/:channelId',
     component: () => import('layouts/IndexLayout.vue'),
     children: [
@@ -43,8 +50,6 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/AboutPage.vue') },
     ],
   },
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
