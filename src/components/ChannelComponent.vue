@@ -1,28 +1,28 @@
 <template>
   <div v-if="showInfiniteScroll">
-      <q-infinite-scroll ref="infiniteScroll" @load="onLoad" reverse>
-        <template v-slot:loading>
-          <div class="row justify-center q-my-md">
-            <q-spinner color="deep-purple-4" name="dots" size="40px" />
-          </div>
-        </template>
+    <q-infinite-scroll ref="infiniteScroll" @load="onLoad" reverse>
+      <template v-slot:loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner color="deep-purple-4" name="dots" size="40px" />
+        </div>
+      </template>
 
-        <!--  Generate the chat messages -->
-        <template v-for="(item, index) in items" :key="index">
-          <q-chat-message v-if="index === 0 || getDayString(item.timestamp) !== getDayString(items[index - 1].timestamp)"
-                          :label="getDayString(item.timestamp)"
-                          style="height: 1rem; padding-top: 0;"
-                          class="text-deep-purple-4"/>
-          <message-component
-            :time="formatTime(item.timestamp)"
-            :message="item.text"
-            :user-name="item.userName"
-            :profile-pic="item.profilePic"
-            :type="item.type"
-            :users="currentChannel.users"
-          />
-        </template>
-      </q-infinite-scroll>
+      <!--  Generate the chat messages -->
+      <template v-for="(item, index) in items" :key="index">
+        <q-chat-message v-if="index === 0 || getDayString(item.timestamp) !== getDayString(items[index - 1].timestamp)"
+                        :label="getDayString(item.timestamp)"
+                        style="height: 1rem; padding-top: 0;"
+                        class="text-deep-purple-4"/>
+        <message-component
+          :time="formatTime(item.timestamp)"
+          :message="item.text"
+          :user-name="item.userName"
+          :profile-pic="item.profilePic"
+          :type="item.type"
+          :users="channel.users"
+        />
+      </template>
+    </q-infinite-scroll>
     </div>
 </template>
 
@@ -31,6 +31,8 @@
   import { computed, nextTick, ref, reactive, watch } from 'vue';
 
   import { useQuasar, QInfiniteScroll } from 'quasar';
+
+  import { v4 as uuidv4 } from 'uuid';
 
   import MessageComponent from 'components/MessageComponent.vue';
   import { allMessages } from 'assets/messages';
@@ -49,7 +51,7 @@
     }
   });
 
-  const $q = useQuasar();
+ const $q = useQuasar();
   const rCurrentServer = reactive(props.currentServer)
   const infiniteScroll = ref<QInfiniteScroll | null>(null);
   const showInfiniteScroll = ref(false);
@@ -76,11 +78,11 @@
   watch(() => props.channel, () => {
     resetMessages();
   }, { immediate: true });
-
+ 
   // Handling the load event in an infinite scroll
   const onLoad = (index: number, done: () => void) => {
     setTimeout(() => {
-      const sliceStart = Math.max(allMessages.value.length - items.value.length - 10, 0);
+      const sliceStart = Math.max(allMessages.value.length - items.value.length - 5, 0);
       const sliceEnd = Math.max(allMessages.value.length - items.value.length, 0);
 
       const newMessages = allMessages.value
@@ -107,9 +109,11 @@
       const systemMessage = {
         id: allMessages.value.length + 1,
         text: listMessage,
-        user: system,
+        userName: system.userName,
+        profilePic: system.profilePic,
         timestamp: new Date(),
         type: MessageType.system,
+        channelUuid: props.channel.uuid
       };
 
       allMessages.value.push(systemMessage);
@@ -120,10 +124,12 @@
       const messageParts = messageClean.split(' ');
       // Create a new channel
       rCurrentServer.channels.push({
+        id: rCurrentServer.channels.length + 1,
+        uuid: uuidv4(),
         name: messageParts[1],
         type: ChannelType.public,
         users: [users.value[0]],
-        messages: allMessages.value
+        messages: allMessages.value,
       });
       showSystemNotification('New channel created');
       return true
@@ -183,9 +189,11 @@
     const message = {
       id: allMessages.value.length + 1,
       text: newMessage,
-      user: user,
+      userName: user.userName,
+      profilePic: user.profilePic,
       timestamp: new Date(),
       type: MessageType.user,
+      channelUuid: props.channel.uuid
     }
 
     // Add the message to the list

@@ -44,7 +44,7 @@
                 @click="navigateToChannel(channel.uuid)"
               >
                 <q-icon :name="channel.type === 'public' ? 'tag' : 'lock'" size="xs" />
-                <span class="text-caption" :class="{ 'text-weight-bold': index === 0 }>{{ channel.name }}</span>
+                <span class="text-caption" :class="{ 'text-weight-bold': index === 0 }">{{ channel.name }}</span>
                 <q-btn flat icon="more_vert" class="edit-icon q-pa-none" size="xs" @click="icon = true" />
               </q-btn>
             </q-expansion-item>
@@ -83,7 +83,6 @@
         </div>
         <div class="col-auto justify-center items-center bottom-bar q-px-md q-py-sm max-width command-line">
           <CommandLineComponent @send-message="handleSendMessage" :current-channel="currentChannel"/>
-        </div>
         </div>
       </div>
     </div>

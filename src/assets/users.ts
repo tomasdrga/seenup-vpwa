@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { User } from 'components/models';
 
-export const system :User= {userName: 'SeenUpBot', profilePic: '/nowty_face.png'};
+export const system :User= { id: 690420, userName: 'SeenUpBot', profilePic: '/nowty_face.png', status: 'Active' };
 
 export const users = ref([
   { id: 1, userName: 'Matej Drienovský', profilePic: '/avatars/matko.jpg', status: 'Active' },  
