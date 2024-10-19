@@ -10,8 +10,8 @@ const getUserDetails = (userId: number) => {
 export const allMessages = ref<Message[]>([
   { id: 1, text: 'Caukoo', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:00:00'), type: MessageType.user, channelUuid: '62e0d22a' },
   { id: 2, text: 'Serusky', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:02:00'), type: MessageType.user, channelUuid: '62e0d22a' },
-  { id: 3, text: '@tomas Kedy ideme lietat', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:04:00'), type: MessageType.user, channelUuid: '62e0d22a' },
-  { id: 4, text: '@matej Neviem musim robit wtech', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:08:00'), type: MessageType.user, channelUuid: '62e0d22a' },
+  { id: 3, text: '@Tomáš Drga Kedy ideme lietat', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:04:00'), type: MessageType.user, channelUuid: '62e0d22a' },
+  { id: 4, text: '@Matej Drienovský Neviem musim robit wtech', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:08:00'), type: MessageType.user, channelUuid: '62e0d22a' },
   { id: 5, text: 'Tryhardiiiiik', ...getUserDetails(1), timestamp: new Date('2024-02-03T10:10:00'), type: MessageType.user, channelUuid: '62e0d22a' },
   { id: 6, text: 'Drz hubu', ...getUserDetails(2), timestamp: new Date('2024-02-03T10:20:00'), type: MessageType.user, channelUuid: '62e0d22a' },
   { id: 7, text: 'Nechce sa ti?', ...getUserDetails(1), timestamp: new Date('2024-02-03T10:30:00'), type: MessageType.user, channelUuid: '62e0d22a' },
@@ -41,12 +41,13 @@ export const allMessages = ref<Message[]>([
 
   { id: 31, text: 'Caukoo', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:00:00'), type: MessageType.user, channelUuid: '4a618c6b' },
   { id: 32, text: 'Serusky', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:02:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 33, text: '@tomas Kedy ideme lietat', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:04:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 34, text: '@matej Neviem musim robit wtech', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:08:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 33, text: '@Tomáš Drga Kedy ideme lietat', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:04:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 34, text: '@Matej Drienovský Neviem musim robit wtech', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:08:00'), type: MessageType.user, channelUuid: '4a618c6b' },
   { id: 35, text: 'Tryhardiiiiik', ...getUserDetails(1), timestamp: new Date('2024-02-03T10:10:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 36, text: 'Caukoo', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:00:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 37, text: 'Serusky', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:02:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 38, text: '@tomas Kedy ideme lietat', ...getUserDetails(1), timestamp: new Date('2024-02-01T10:04:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 39, text: '@matej Neviem musim robit wtech', ...getUserDetails(2), timestamp: new Date('2024-02-01T10:08:00'), type: MessageType.user, channelUuid: '4a618c6b' },
-  { id: 40, text: 'Tryhardiiiiik', ...getUserDetails(1), timestamp: new Date('2024-02-03T10:10:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 36, text: 'No čo, už by to chcelo.', ...getUserDetails(1), timestamp: new Date('2024-03-01T09:10:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 37, text: 'Musím dokončiť projekt, mám deadline do piatku :(', ...getUserDetails(2), timestamp: new Date('2024-03-01T09:12:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 38, text: 'Okeeej, tak si tryhardík aj naďalej 😆', ...getUserDetails(1), timestamp: new Date('2024-03-01T09:15:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 39, text: 'Po piatku si nájdeme čas, sľubujem', ...getUserDetails(2), timestamp: new Date('2024-03-01T09:18:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  { id: 40, text: 'Dobre, držím ťa za slovo.', ...getUserDetails(1), timestamp: new Date('2024-03-01T09:20:00'), type: MessageType.user, channelUuid: '4a618c6b' },
+  
 ]);
