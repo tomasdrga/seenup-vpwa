@@ -16,6 +16,13 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/register',
+    component: () => import('layouts/HomeLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/RegisterPage.vue') },
+    ],
+  },
+  {
     path: '/test',
     component: () => import('layouts/IndexLayout.vue'),
     children: [
