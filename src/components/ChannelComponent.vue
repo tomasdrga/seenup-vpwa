@@ -26,7 +26,7 @@
     </div>
 </template>
 
-          
+
 <script setup lang="ts">
   import { computed, nextTick, ref, reactive, watch } from 'vue';
 
@@ -39,7 +39,7 @@
   import { users, system } from 'assets/users';
   import { ChannelType, Message, MessageType, User, Channel, Server } from 'components/models';
   import { formatTime, getDayString, scrollToBottom } from './channel-helpers';
- 
+
   const props = defineProps({
     currentServer: {
       type: Object as () => Server,
@@ -57,7 +57,7 @@
   const showInfiniteScroll = ref(false);
   const items = ref<Message[]>([]);
   const userLoggedIn = 'Matej';
-  
+
   // Reset messages, used when switching between channels multiple times
   const resetMessages = () => {
     items.value = allMessages.value
@@ -73,12 +73,12 @@
       }
     });
   };
-  
+
   // Watch for channel
   watch(() => props.channel, () => {
     resetMessages();
   }, { immediate: true });
- 
+
   // Handling the load event in an infinite scroll
   const onLoad = (index: number, done: () => void) => {
     setTimeout(() => {
@@ -92,7 +92,7 @@
       items.value.unshift(...newMessages);
 
       if (newMessages.length === 0 && infiniteScroll.value) {
-        infiniteScroll.value.stop();  
+        infiniteScroll.value.stop();
       }
 
       done();
@@ -149,16 +149,19 @@
   }
 
   function showNotification(message: string, user: User) {
+    const cleanMessage = message.replace(/<[^>]*>/g, '').trim();
+    const processedMessage = cleanMessage.length > 20 ? cleanMessage.substring(0, 25) + '...' : cleanMessage;
+
     // Process the message to highlight the users
-    const processedMessage = computed(() => {
-      return message.replace(/\B@([\w\n]+)/g, function(_: string, username: string) {
-        const userExists = users.value.some((user: User) => user.userName === username);
+    const messageToShow = computed(() => {
+      return processedMessage.replace(/@(\S+\s?\S*)(?=\s|$)/g, function(_: string, matchedUsername: string) {
+        const username = matchedUsername.trim();
+
+        const userExists = users.value.some((user: User) => (user.userName === username) || username.startsWith(user.userName + ' '));
+
         return userExists ? `<mark>@${username}</mark>` : `@${username}`;
       });
     });
-
-    // Stripe part of the message
-    const messageToShow = processedMessage.value.length > 20 ? processedMessage.value.substring(0, 20) + '...' : processedMessage.value;
 
     // Custom notification
     $q.notify({
@@ -168,7 +171,7 @@
       message: `
         <div class="col message-alert" style="width: 300px;" role="alert">
           <div class="text-bold">${user.userName}</div>
-          <div>${messageToShow}</div>
+          <div>${messageToShow.value}</div>
         </div>
       `,
       position: 'top-right',

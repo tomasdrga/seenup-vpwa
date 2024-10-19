@@ -1,6 +1,6 @@
 <template>
   <div v-if="props.showCommands" class="command-suggestions absolute bg-white rounded-border text-primary hide-scrollbar"
-       style="bottom: 95px; left: -.5rem; max-width: 300px; max-height: 10rem; overflow: auto; width: fit-content;">
+       style="bottom: 95px; left: -.5rem; max-width: 300px; max-height: 10rem; overflow: auto; width: 300px;">
     <q-list dense>
       <q-item v-for="(command, index) in props.commands" :key="command.name" clickable v-ripple @click="selectCommand(command.name)"
               :class="index === commands.length - 1 ? '' : 'command-item'">
