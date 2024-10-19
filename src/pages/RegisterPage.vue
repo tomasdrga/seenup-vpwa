@@ -38,6 +38,7 @@
           filled
           v-model="email"
           label="Email*"
+          type="email"
           lazy-rules
           :rules="[ val => val && val.length > 0 || 'Please type your email address']"/>
         </q-card-section>
@@ -47,6 +48,7 @@
             filled
             v-model="password"
             label="Password*"
+            type="password"
             lazy-rules
             :rules="[
               val => val && val.length > 0 || 'Please type your password',

@@ -15,6 +15,7 @@
           min-height="1rem"
           max-height="5rem"
           flat
+          @keydown = "onKeyDownInput"
           overflow-hidden
           placeholder="Message #social"
           toolbar-bg="grey"
@@ -148,6 +149,12 @@
         html: true
       });
     }, 200);
+  };
+
+  const onKeyDownInput = (event: KeyboardEvent): void => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      sendMessage();
+    }
   };
 
   // Emit the message to the parent component
