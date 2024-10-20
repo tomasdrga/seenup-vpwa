@@ -1,6 +1,7 @@
 <template>
   <q-page class="full-height q-pb-md q-pr-md padding-left-sm">
     <div class="row no-wrap justify-start items-start content-start rounded bg-white" id="main">
+      <!-- Side Popup Dialog -->
       <q-dialog v-model="dialog" persistent>
         <div id="side-popup">
           <div class="row items-center justify-center q-py-md q-pb-xl">
@@ -28,6 +29,8 @@
           </div>
         </div>
       </q-dialog>
+
+      <!-- Left Sidebar -->
       <div class="col-0 col-md-2 full-height gt-sm" id="left-side-bar">
         <p :class="$q.screen.lt.lg ? 'text-smaller q-pa-md text-weight-bold text-primary text-uppercase' : 'text-h6 q-pa-md text-weight-bold text-primary text-uppercase'">{{ currentServer.name }}</p>
         <div class="text-primary text-body">
@@ -46,14 +49,16 @@
                 <q-icon :name="channel.type === 'public' ? 'tag' : 'lock'" size="xs" />
                 <span class="text-caption q-pr-sm" :class="{ 'text-weight-bold': index === 0 || index === 2}">{{ channel.name }}</span>
                 <q-icon v-if="index === 0" name="star" size="xs"/>
-                
                 <q-btn flat icon="more_vert" class="edit-icon q-pa-none" size="xs" @click="icon = true" />
               </q-btn>
             </q-expansion-item>
           </q-list>
         </div>
       </div>
+
+      <!-- Main Content -->
       <div class="column col-12 col-md-10" id="channel-container">
+        <!-- Top Bar -->
         <div class="col-auto text-primary q-pt-md top-bar max-width">
           <div class="fix-top full-width text-h6 q-pl-md text-weight-bold border-bottom content-center text-uppercase">
             <q-btn @click="dialog = true" color="primary" flat class="lt-md q-pa-none" icon="menu" size="sm"/>
@@ -80,15 +85,20 @@
             </q-route-tab>
           </q-tabs>
         </div>
+
+        <!-- Channel Content -->
         <div class="col channel-container max-width overflow-auto hide-scrollbar">
           <ChannelComponent :current-server="currentServer" :channel="currentChannel" ref="channelComponent" />
         </div>
-        <div class="col-auto justify-center items-center bottom-bar q-px-md q-py-sm max-width command-line">
+
+        <!-- Command Line -->
+        <div class="col-auto justify-center items-center bottom-bar q-px-sm q-mx-md q-py-sm max-width command-line">
           <CommandLineComponent @send-message="handleSendMessage" :current-channel="currentChannel"/>
         </div>
       </div>
     </div>
 
+    <!-- Channel Settings Dialog || Extract in future-->
     <q-dialog v-model="icon">
       <q-card style="min-width: 75vw; max-width: 75vw; max-height: 75vh" class="text-primary">
         <q-card-section class="row items-center q-pb-none">
@@ -210,60 +220,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useQuasar } from 'quasar';
-import CommandLineComponent from 'components/CommandLineComponent.vue';
-import ChannelComponent from 'src/components/ChannelComponent.vue';
-import { useServerStore } from '../stores/serverStore';
-// import { servers } from 'assets/servers';
-// import { Channel } from 'components/models';
+  import { defineComponent, ref, watch } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
+  import { useQuasar } from 'quasar';
+  import CommandLineComponent from 'components/CommandLineComponent.vue';
+  import ChannelComponent from 'src/components/ChannelComponent.vue';
+  import { useServerStore } from '../stores/serverStore';
 
-export default defineComponent({
-  components: { ChannelComponent, CommandLineComponent },
-  setup() {
-    const $q = useQuasar();
-    const route = useRoute();
-    const router = useRouter();
-    const name = ref(null);
-    const model = ref(null);
+  export default defineComponent({
+    components: { ChannelComponent, CommandLineComponent },
+    setup() {
+      const $q = useQuasar();
+      const route = useRoute();
+      const router = useRouter();
+      
+      // State variables
+      const name = ref<string | null>(null);
+      const model = ref<string | null>(null);
+      const selectedTab = ref('general');
+      const icon = ref(false);
+      const dialog = ref(false);
 
-    const selectedTab = ref('general');
-
-    const serverStore = useServerStore();
-    const currentServer = ref(serverStore.servers.find(server => server.uuid === route.params.serverId) || serverStore.servers[0]);
-    const currentChannel = ref(currentServer.value.channels.find(channel => channel.uuid === route.params.channelId) || currentServer.value.channels[0]);
+      // Server and channel data
+      const serverStore = useServerStore();
+      const currentServer = ref(serverStore.servers.find(server => server.uuid === route.params.serverId) || serverStore.servers[0]);
+      const currentChannel = ref(currentServer.value.channels.find(channel => channel.uuid === route.params.channelId) || currentServer.value.channels[0]);
+      
+      // Reference to the ChannelComponent
+      const channelComponent = ref<InstanceType<typeof ChannelComponent> | null>(null);
     
-    const channelComponent = ref<InstanceType<typeof ChannelComponent> | null>(null);
-  
-    const handleSendMessage = (message: string) => {
-      if (channelComponent.value) {
-        channelComponent.value.onMessageSent(message);
-      } else {
-        console.warn('channelComponent is not available yet.');
-      }
-    };
+      // Handle sending a message
+      const handleSendMessage = (message: string) => {
+        if (channelComponent.value) {
+          channelComponent.value.onMessageSent(message);
+        } else {
+          console.warn('channelComponent is not available yet.');
+        }
+      };
 
-    const navigateToChannel = (channelId: string) => {
-      router.push(`/client/${currentServer.value.uuid}/${channelId}`);
-    };
+      // Navigate to a specific channel
+      const navigateToChannel = (channelId: string) => {
+        router.push(`/client/${currentServer.value.uuid}/${channelId}`);
+      };
 
-    watch(route, () => {
-      currentServer.value = serverStore.servers.find(server => server.uuid === route.params.serverId) || serverStore.servers[0];
-      currentChannel.value = currentServer.value.channels.find(channel => channel.uuid === route.params.channelId) || currentServer.value.channels[0];
-    });
-    
-    return {
-      handleSendMessage,
-      channelComponent,
-      currentServer,
-      currentChannel,
-      selectedTab,
-      icon: ref(false),
-      model: ref(null),
-      name,
-      options: ['Public', 'Private'],
-      onSubmit() {
+      // Watch for route changes to update current server and channel
+      watch(route, () => {
+        currentServer.value = serverStore.servers.find(server => server.uuid === route.params.serverId) || serverStore.servers[0];
+        currentChannel.value = currentServer.value.channels.find(channel => channel.uuid === route.params.channelId) || currentServer.value.channels[0];
+      });
+      
+      // Handle form submission
+      const onSubmit = () => {
         $q.notify({
           progress: true,
           color: 'grey',
@@ -272,125 +279,131 @@ export default defineComponent({
           message: 'Channel changes saved successfully',
           position: 'top',
         });
-      },
-      onReset() {
+      };
+
+      // Handle form reset
+      const onReset = () => {
         name.value = null;
         model.value = null;
-      },
-      navigateToChannel,
-    };
-  },
-  data() {
-    return {
-      dialog: false,
-    };
-  },
-});
+      };
+
+      return {
+        handleSendMessage,
+        channelComponent,
+        currentServer,
+        currentChannel,
+        selectedTab,
+        icon,
+        dialog,
+        model,
+        name,
+        options: ['Public', 'Private'],
+        onSubmit,
+        onReset,
+        navigateToChannel,
+      };
+    },
+  });
 </script>
 
 <style lang="scss">
-#main {
-  border: 2px solid #00000015;
-  min-height: calc(100vh - 67px);
-  max-height: calc(100vh - 67px);
-}
-
-.channel-item {
-  position: relative;
-}
-
-.edit-icon {
-  position: absolute;
-  right: 10px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.channel-item:hover .edit-icon {
-  opacity: 1;
-}
-
-.top-bar {
-  border-bottom: 2px solid #00000015;
-}
-
-#left-side-bar {
-  border-right: 2px solid #00000015;
-  min-height: calc(100vh - 70px);
-  max-height: calc(100vh - 70px);
-}
-
-#channel-container {
-  height: calc(100vh - 70px);
-  min-height: calc(100vh - 70px);
-  max-height: calc(100vh - 70px);
-}
-
-.q-chat-message .q-chat-message--received {
-  width: 250px;
-}
-
-.channel-container {
-  overflow: auto;
-}
-
-.rounded {
-  border-radius: 10px;
-}
-
-.max-width {
-  max-width: full-width;
-}
-
-.command-line {
-  padding: none;
-}
-
-.fix-bottom {
-  position: fixed;
-  bottom: 0;
-  width: full-width;
-}
-
-.full-height {
-  min-height: full-width;
-}
-
-.text-smaller {
-  font-size: 1rem;
-}
-
-#side-popup {
-  width: 300px;
-  height: 100vh !important;
-  background-color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-}
-
-body.platform-ios .q-dialog__inner--minimized > div, body.platform-android:not(.native-mobile) .q-dialog__inner--minimized > div {
-  max-height: 100vh;
-}
-
-.channel-button {
-  width: full-width;
-}
-
-@media (max-width: $breakpoint-sm-min) {
-  .padding-left-sm {
-    padding-left: 16px;
+  #main {
+    border: 2px solid #00000015;
+    min-height: calc(100vh - 67px);
+    max-height: calc(100vh - 67px);
   }
 
-  #main {
-    min-height: calc(100vh - 124px);
+  .channel-item {
+    position: relative;
+  }
+
+  .edit-icon {
+    position: absolute;
+    right: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .channel-item:hover .edit-icon {
+    opacity: 1;
+  }
+
+  .top-bar {
+    border-bottom: 2px solid #00000015;
+  }
+
+  #left-side-bar {
+    border-right: 2px solid #00000015;
+    min-height: calc(100vh - 70px);
+    max-height: calc(100vh - 70px);
   }
 
   #channel-container {
-    height: calc(100vh - 120px);
-    min-height: calc(100vh - 120px);
-    max-height: calc(100vh - 120px);
+    height: calc(100vh - 70px);
+    min-height: calc(100vh - 70px);
+    max-height: calc(100vh - 70px);
   }
-}
+
+  .q-chat-message .q-chat-message--received {
+    width: 250px;
+  }
+
+  .channel-container {
+    overflow: auto;
+  }
+
+  .rounded {
+    border-radius: 10px;
+  }
+
+  .max-width {
+    max-width: 100%;
+  }
+
+  .command-line {
+    padding: 0;
+  }
+
+  .full-height {
+    min-height: 100%;
+  }
+
+  .text-smaller {
+    font-size: 1rem;
+  }
+
+  #side-popup {
+    width: 300px;
+    height: 100vh !important;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  body.platform-ios .q-dialog__inner--minimized > div, 
+  body.platform-android:not(.native-mobile) .q-dialog__inner--minimized > div {
+    max-height: 100vh;
+  }
+
+  .channel-button {
+    width: 100%;
+  }
+
+  @media (max-width: $breakpoint-sm-min) {
+    .padding-left-sm {
+      padding-left: 16px;
+    }
+
+    #main {
+      min-height: calc(100vh - 124px);
+    }
+
+    #channel-container {
+      height: calc(100vh - 120px);
+      min-height: calc(100vh - 120px);
+      max-height: calc(100vh - 120px);
+    }
+  }
 </style>

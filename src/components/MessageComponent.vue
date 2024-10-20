@@ -37,11 +37,10 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-  import { computed, defineProps, PropType } from 'vue';
+  import { computed, PropType } from 'vue';
 
   import { MessageType, User } from 'components/models';
 
@@ -82,20 +81,20 @@
   });
 
   const userStatus = computed(() => {
-  const user = props.users.find((user: User) => user.userName === props.userName);
-  if (!user) return {icon: 'warning', color: 'red'};
+    const user = props.users.find((user: User) => user.userName === props.userName);
+    if (!user) return {icon: 'warning', color: 'red'};
 
-  switch (user.status) {
-    case 'Active':
-      return {icon: 'radio_button_checked', color: 'green'};
-    case 'Offline':
-      return {icon: 'radio_button_checked', color: 'grey-6'};
-    case 'Do not disturb':
-      return {icon: 'nightlight', color: 'primary'};
-    default:
-      return {icon: 'warning', color: 'red'};
-  }
-});
+    switch (user.status) {
+      case 'Active':
+        return {icon: 'radio_button_checked', color: 'green'};
+      case 'Offline':
+        return {icon: 'radio_button_checked', color: 'grey-6'};
+      case 'Do not disturb':
+        return {icon: 'nightlight', color: 'primary'};
+      default:
+        return {icon: 'warning', color: 'red'};
+    }
+  });
 </script>
 
 <style>
