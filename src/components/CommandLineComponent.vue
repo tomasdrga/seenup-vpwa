@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, defineEmits, watch, nextTick, defineProps } from 'vue';
+  import { computed, ref, watch, nextTick } from 'vue';
 
   import { useQuasar } from 'quasar';
 
@@ -95,6 +95,7 @@
     let cleanedValue = newValue.replace(/<[^>]*>?/gm, '');
     showCommands.value = cleanedValue === '/';
   });
+
   watch(editor, (newValue: string) => {
     const replacedValue: string = newValue.replace(/<br>/g, ' ').replace(/<\/?div>/g, ' ');
     const cleanValue: string = replacedValue.replace(/<[^>]*>?/gm, '');
@@ -109,6 +110,7 @@
     await nextTick();
     showUsers.value = false;
   };
+
   const selectCommand = async (command: string) => {
     editor.value = command;
     await nextTick();
@@ -119,6 +121,7 @@
     showUsers.value = !showUsers.value;
     editor.value = editor.value + '@';
   };
+
   const toggleToolbar = () => {
     showToolbar.value = !showToolbar.value;
   };
@@ -164,11 +167,11 @@
       editor.value = '';
     }
   };
+
   const emit = defineEmits(['send-message']);
 </script>
 
 <style scoped>
-
   .rounded-border {
     border: 1px solid #00000015;
     border-radius: 5px;
@@ -188,5 +191,4 @@
   .typing-text {
     font-size: 10px;
   }
-
 </style>

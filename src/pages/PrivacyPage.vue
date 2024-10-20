@@ -1,8 +1,12 @@
 <template>
+  <!-- Main container for the Privacy Policy page -->
   <q-page class="q-pa-md text-primary q-pt-xl q-px-xl">
+    <!-- Page title -->
     <p class="text-h4 text-weight-bold text-center">Privacy Policy</p>
 
+    <!-- Main card container -->
     <q-card flat class="my-card bg-grey">
+      <!-- Section for the Privacy Policy content -->
       <q-card-section class="q-pt-none">
         <p>
           At Seenup, we take your privacy as seriously as a cat takes its nap! Here’s the lowdown on how we collect, use, and protect your information. We promise to keep it more entertaining than a clown at a birthday party!
@@ -17,7 +21,7 @@
         <p>
           <strong>C. Cookies:</strong> We use cookies to enhance your experience. Not the delicious kind (though we wish they were). These are little bits of data that help us remember you, like that one friend who always forgets your name.
         </p>
-        <p>
+        <div>
           <strong>2. How We Use Your Information</strong><br>
           We use your information to:
           <ul>
@@ -26,16 +30,16 @@
             <li>Send you newsletters, promotions, and the occasional meme (because who doesn’t love a good meme?).</li>
             <li>Respond to your inquiries with the swiftness of a caffeinated squirrel.</li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>3. Sharing Your Information</strong><br>
           We promise not to sell your info to aliens or shady characters. We only share your information with:
           <ul>
             <li><strong>Third-Party Service Providers:</strong> These are the helpful folks who assist us in processing payments and delivering your widgets. They’re like our digital sidekicks.</li>
             <li><strong>Legal Authorities:</strong> If the law comes knocking, we’ll cooperate faster than you can say “seen!”</li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div>
           <strong>4. Your Rights</strong><br>
           You have rights, like the right to:
           <ul>
@@ -43,7 +47,7 @@
             <li>Request corrections (we all make mistakes, even our spellcheck).</li>
             <li>Opt-out of marketing communications (but we’ll miss you, like a sock misses its pair!).</li>
           </ul>
-        </p>
+        </div>
         <p>
           <strong>5. Security</strong><br>
           We take security seriously! Your information is stored securely in a digital fortress guarded by fire-breathing dragons (well, more like high-tech security measures, but we like to think of it as a fortress).

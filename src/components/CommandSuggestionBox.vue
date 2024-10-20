@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps, defineEmits } from 'vue';
   import { Command, } from './models';
 
   const props = defineProps({
@@ -29,7 +28,6 @@
   });
 
   const emit = defineEmits(['command-selected']);
-
   // Method to handle command select
   const selectCommand = (commandName: string) => {
     emit('command-selected', commandName);
@@ -54,5 +52,4 @@
   .command-text {
     font-size: 10px;
   }
-
 </style>

@@ -26,7 +26,6 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
   import { computed, nextTick, ref, reactive, watch } from 'vue';
 
@@ -52,7 +51,7 @@
   });
 
   const $q = useQuasar();
-  const rCurrentServer = reactive(props.currentServer)
+  const rCurrentServer = reactive(props.currentServer);
   const infiniteScroll = ref<QInfiniteScroll | null>(null);
   const showInfiniteScroll = ref(false);
   const items = ref<Message[]>([]);
@@ -60,10 +59,9 @@
 
   // Reset messages, used when switching between channels multiple times
   const resetMessages = () => {
-    // Load the last 10 messages for the current channel
     items.value = allMessages.value
       .filter(message => message.channelUuid === props.channel.uuid)
-      .slice(-10); // Get the latest 10 messages
+      .slice(-10);
 
     showInfiniteScroll.value = false;
 
@@ -86,15 +84,12 @@
       const currentMessageCount = items.value.length;
       const allMessagesInChannel = allMessages.value.filter(message => message.channelUuid === props.channel.uuid);
 
-      // Load previous messages (older messages), skipping the ones already loaded
       const newMessages = allMessagesInChannel.slice(Math.max(allMessagesInChannel.length - currentMessageCount - 10, 0), allMessagesInChannel.length - currentMessageCount);
 
-      // Add the newly loaded messages to the beginning of the list
       if (newMessages.length > 0) {
         items.value.unshift(...newMessages);
       }
 
-      // Stop infinite scroll if there are no more messages to load
       if (newMessages.length === 0 && infiniteScroll.value) {
         infiniteScroll.value.stop();
       }
@@ -139,7 +134,7 @@
       return true
     }
     return false
-  }
+  };
 
   function showSystemNotification(message: string) {
     $q.notify({
@@ -150,7 +145,7 @@
       position: 'top-right',
       timeout: 1000
     });
-  }
+  };
 
   function showNotification(message: string, user: User) {
     const cleanMessage = message.replace(/<[^>]*>/g, '').trim();
@@ -182,14 +177,14 @@
       timeout: 1000,
       html: true
     });
-  }
+  };
 
   function addMessage(newMessage: string) {
     if (commandsCheck(newMessage)) {
       nextTick(() => {
-        scrollToBottom()
-      })
-      return
+        scrollToBottom();
+      });
+      return;
     }
 
     const user = users.value[0];
@@ -201,18 +196,18 @@
       timestamp: new Date(),
       type: MessageType.user,
       channelUuid: props.channel.uuid
-    }
+    };
 
     // Add the message to the list
-    allMessages.value.push(message)
-    items.value.push(message)
-    showNotification(newMessage, users.value[0])
+    allMessages.value.push(message);
+    items.value.push(message);
+    showNotification(newMessage, users.value[0]);
 
     // Scroll to the bottom of the chat
     nextTick(() => {
-      scrollToBottom()
-    })
-  }
+      scrollToBottom();
+    });
+  };
 
   // Expose the function to the parent component
   const onMessageSent = (msg: string) => {

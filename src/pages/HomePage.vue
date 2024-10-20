@@ -1,4 +1,5 @@
 <template>
+  <!-- Main container for the Home page -->
   <q-page class="q-pa-md text-primary q-pt-xl q-px-xl">
     <!-- Parallax Section -->
     <div>
@@ -21,6 +22,7 @@
       </q-card>
 
       <div class="row q-gutter-md q-mt-xs justify-center">
+        <!-- Statistic Card 1 -->
         <div class="col-12 col-md-3">
           <q-card flat bordered class="bg-grey">
             <q-card-section>
@@ -30,20 +32,22 @@
           </q-card>
         </div>
 
+        <!-- Statistic Card 2 -->
         <div class="col-12 col-md-3">
           <q-card flat bordered class="bg-grey">
             <q-card-section>
               <h3 class="text-h5 text-center text-weight-bold">80% Less Boring</h3>
-              <p class="text-center">Say goodbye to snooze-fest meetings! We keep it! Bli Skrt Vruum</p>
+              <p class="text-center">Say goodbye to snooze-fest meetings! We keep it fun and engaging!</p>
             </q-card-section>
           </q-card>
         </div>
 
+        <!-- Statistic Card 3 -->
         <div class="col-12 col-md-3">
           <q-card flat bordered class="bg-grey">
             <q-card-section>
               <h3 class="text-h5 text-center text-weight-bold">99% Collab</h3>
-              <p class="text-center">Our platform makes teamwork easier! Bla Blop Blo Blup Skrut Brr</p>
+              <p class="text-center">Our platform makes teamwork easier and more enjoyable!</p>
             </q-card-section>
           </q-card>
         </div>
@@ -60,6 +64,7 @@
       </q-card>
 
       <div class="row q-gutter-md q-mt-xs justify-center">
+        <!-- Feature Card 1 -->
         <div class="col-12 col-md-3">
           <q-card flat bordered class="bg-grey">
             <q-card-section>
@@ -69,15 +74,17 @@
           </q-card>
         </div>
 
+        <!-- Feature Card 2 -->
         <div class="col-12 col-md-3">
           <q-card flat bordered class="bg-grey">
             <q-card-section>
               <h3 class="text-h5 text-center text-weight-bold">File Sharing</h3>
-              <p class="text-center">Share files without the endless email threads—because?</p>
+              <p class="text-center">Share files without the endless email threads—because simplicity is key!</p>
             </q-card-section>
           </q-card>
         </div>
 
+        <!-- Feature Card 3 -->
         <div class="col-12 col-md-3">
           <q-card flat bordered class="bg-grey">
             <q-card-section>
@@ -90,11 +97,3 @@
     </div>
   </q-page>
 </template>
-
-<style>
-.parallax-section {
-  position: relative;
-  overflow: hidden;
-}
-</style>
-

@@ -16,35 +16,34 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
-import { User } from 'components/models';
+  import { User } from 'components/models';
 
-const props = defineProps({
-  showUsers: {
-    type: Boolean,
-    required: true,
-  },
-  users: {
-    type: Array as () => User[],
-    required: false,
-    default: () => [],
-  },
-});
+  const props = defineProps({
+    showUsers: {
+      type: Boolean,
+      required: true,
+    },
+    users: {
+      type: Array as () => User[],
+      required: false,
+      default: () => [],
+    },
+  });
 
-const emit = defineEmits(['user-selected']);
-const selectUser = (userName: string) => {
-  emit('user-selected', userName);
-};
+  const emit = defineEmits(['user-selected']);
+  const selectUser = (userName: string) => {
+    emit('user-selected', userName);
+  };
 </script>
 
 <style scoped>
-.user-item {
-  border-bottom: 1px solid #00000015;
-}
-.user-suggestions {
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-}
+  .user-item {
+    border-bottom: 1px solid #00000015;
+  }
+  .user-suggestions {
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
 </style>
